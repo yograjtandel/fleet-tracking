@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="brand_name_1" model="fleet.vehicle.brand">
+		<field name="name">Ford</field>
+	</record>
+	<record id="brand_name_2" model="fleet.vehicle.brand">
+		<field name="name">Honda</field>
+	</record>
+	<record id="brand_name_3" model="fleet.vehicle.brand">
+		<field name="name">Hundai</field>
+	</record>
+	<record id="brand_name_3" model="fleet.vehicle.brand">
+		<field name="name">Chevrolet</field>
+	</record>
+
+	<record id="contract_type_1" model="contract.type">
+		<field name="name">Dayily</field>
+	</record>
+	<record id="contract_type_2" model="contract.type">
+		<field name="name">Weekly</field>
+	</record>
+	<record id="contract_type_3" model="contract.type">
+		<field name="name">Monthly</field>
+	</record>
+	<record id="contract_type_4" model="contract.type">
+		<field name="name">Yearly</field>
+	</record>
+
+
+	<record id="service_type_1" model="fleet.vehicle.service.type">
+		<field name="name">Wash</field>
+	</record>
+	<record id="service_type_2" model="fleet.vehicle.service.type">
+		<field name="name">Tire</field>
+	</record>
+	<record id="service_type_3" model="fleet.vehicle.service.type">
+		<field name="name">Routine Maintenance</field>
+	</record>
+	<record id="service_type_4" model="fleet.vehicle.service.type">
+		<field name="name">Repair</field>
+	</record>
+</odoo>

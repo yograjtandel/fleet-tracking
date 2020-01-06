@@ -107,7 +107,7 @@ class VehicleContract(models.Model):
 	def _check_age(self):		
 		for record in self:
 			if record.end_date < record.start_date:
-				raise ValidationError("invalid dates")
+				raise ValidationError("Contract end date must be greter than start date")
 
 
 

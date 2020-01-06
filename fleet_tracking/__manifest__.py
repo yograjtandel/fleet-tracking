@@ -11,6 +11,7 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'data/data.xml',
         'views/vehicle_model_brand_view.xml',
     ],
     # only loaded in demonstration mode
