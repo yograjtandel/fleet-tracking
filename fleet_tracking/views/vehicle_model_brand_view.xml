@@ -265,7 +265,7 @@
       </field>
     </record>
 
-    <record model = "ir.ui.view" id = "fleet_vehicle_contract_list_view">
+    <record model = "ir.ui.view" id = "fleet_vehicle_contract_form_view">
       <field name="name">fleet.vehicle.contract.form</field>
       <field name="model">fleet.vehicle.contract</field>
       <field name="arch" type="xml">
