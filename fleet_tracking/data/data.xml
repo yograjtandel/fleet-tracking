@@ -14,7 +14,7 @@
 	</record>
 
 	<record id="contract_type_1" model="contract.type">
-		<field name="name">Dayily</field>
+		<field name="name">Daily</field>
 	</record>
 	<record id="contract_type_2" model="contract.type">
 		<field name="name">Weekly</field>

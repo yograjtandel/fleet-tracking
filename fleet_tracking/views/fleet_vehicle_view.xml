@@ -2,49 +2,7 @@
 
 <odoo>
   <data>
-    <record model='ir.ui.view' id = 'vehicle_vehicle_list_view'>
-      <field name= "name">fleet.vehicle.vehicle.tree</field>
-      <field name="model">fleet.vehicle</field>
-      <field name="arch" type="xml">
-        <tree>
-              <field name="model"/>
-              <field name="license_plate"/>
-              <field name="driver"/>
-              <field name="no_of_seats"/>
-              <field name="no_of_doors"/>
-              <field name="color"/>
-              <field name="model_year"/>
-              <field name="description"/>
-        </tree>
-      </field>
-    </record>
 
-    <record model='ir.ui.view' id = 'vehicle_vehicle_form_view'>
-      <field name= "name">fleet.vehicle.form</field>
-      <field name="model">fleet.vehicle</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <group>
-              <field name="model"/>
-              <field name="license_plate"/>
-              <field name="driver"/>
-              <field name="no_of_seats"/>
-              <field name="no_of_doors"/>
-              <field name="color"/>
-              <field name="model_year"/>
-              <field name="description"/>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
-
-    <record model="ir.actions.act_window" id = "vehicle_vehicle_action_window">
-      <field name="name"> vehicle </field>
-      <field name="res_model">fleet.vehicle</field>
-      <field name="view_mode">tree,form</field>
-    </record>
 
 
     <record model='ir.ui.view' id = 'fleet_driver_list_view'>
@@ -84,6 +42,53 @@
       <field name="res_model">fleet.driver</field>
       <field name="view_mode">tree,form</field>
     </record>
+
+
+        <record model='ir.ui.view' id = 'vehicle_vehicle_list_view'>
+      <field name= "name">fleet.vehicle.vehicle.tree</field>
+      <field name="model">fleet.vehicle</field>
+      <field name="arch" type="xml">
+        <tree>
+              <field name="model"/>
+              <field name="license_plate"/>
+              <field name="driver"/>
+              <field name="no_of_seats"/>
+              <field name="no_of_doors"/>
+              <field name="color"/>
+              <field name="model_year"/>
+              <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model='ir.ui.view' id = 'vehicle_vehicle_form_view'>
+      <field name= "name">fleet.vehicle.form</field>
+      <field name="model">fleet.vehicle</field>
+      <field name="arch" type="xml">
+
+        <form>
+          <sheet>
+            <group>
+              <field name="model"/>
+              <field name="license_plate"/>
+              <field name="driver"/>
+              <field name="no_of_seats"/>
+              <field name="no_of_doors"/>
+              <field name="color"/>
+              <field name="model_year"/>
+              <field name="description"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id = "vehicle_vehicle_action_window">
+      <field name="name"> vehicle </field>
+      <field name="res_model">fleet.vehicle</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
 
 
     <menuitem name="Vehicle" id="vehicle_vehicle_menu_child" parent="vehicle_brand_menu_root" action="vehicle_vehicle_action_window"/>

@@ -79,6 +79,15 @@
       <field name="model">fleet.vehicle.contract</field>
       <field name="arch" type="xml">
         <form>
+          <header>
+<!--             <field name="custom_state" widget="statusbar" status_visible="draft,confirm,done"/>
+            <button string = "Confirm" type="object" name="action_confirm" attrs="{'invisible': [('custom_state', '=', 'draft' )]}" class = "oe_highlight"/> -->
+            <button string = "Confirm" type="object" name="action_confirm" states="draft" class = "oe_highlight" />
+            <button string = "Draft" type="object" name="action_draft" states="confirm,done" class = "oe_highlight" />
+            <button string = "Done" type="object" name="action_done" states="draft,confirm" class = "oe_highlight" />
+            <field name="state" widget="statusbar" status_visible="draft,confirm,done"/>
+          </header>
+
           <sheet>
             <group>
               <field name="name"/>
@@ -93,13 +102,58 @@
       </field>
     </record>
 
+
+    <record model = "ir.ui.view" id = "fleet_vehicle_contract_calendar_view">
+      <field name="name">fleet.vehicle.contract.calendar</field>
+      <field name="model">fleet.vehicle.contract</field>
+      <field name="arch" type="xml">
+        <calendar string="Contract's" date_start="start_date" date_stop="end_date" color="name">
+            <field name="name"/>
+        </calendar>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="fleet_vehicle_contract_search_view">
+      <field name="name">fleet.vehicle.contract.search</field>
+      <field name="model">fleet.vehicle.contract</field>
+      <field name="arch" type="xml">
+          <search>
+              <field name="name"/>
+              <field name="start_date"/>
+              <field name="contract_type" string="Contract Type"
+               filter_domain="[('contract_type', 'ilike', self)]"/>
+
+              <group string="Group By">
+                  <filter name="group_by_vehicle" string="Vehicle"
+                          context="{'group_by': 'vehicle'}"/>
+              </group>
+          </search>
+      </field>
+    </record>
+
+
+
+<!--     <record model="ir.ui.view" id="fleet_vehicle_contract_graph_view">
+      <field name="name">fleet.vehicle.contract.graph</field>
+      <field name="model">fleet.vehicle.contract</field>
+      <field name="arch" type="xml">
+        <graph string="Trip of the vehicle">
+          ''' waiting for data fetching session'''
+        </graph>
+      </field>
+    </record> -->
+
     <record model="ir.actions.act_window" id = "fleet_vehicle_contract_action_window">
       <field name="name"> Contract </field>
       <field name="res_model">fleet.vehicle.contract</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,calendar</field>
     </record> 
 
     <menuitem name="Contract" id="fleet_vehicle_contract_menu_child" parent="vehicle_brand_menu_root" action="fleet_vehicle_contract_action_window"/>
 
   </data>
 </odoo>
+
+
+

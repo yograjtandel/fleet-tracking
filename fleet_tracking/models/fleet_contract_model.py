@@ -28,6 +28,24 @@ class VehicleContract(models.Model):
 	end_date = fields.Date('End Date', required=True ,default=fields.Date.today)
 	vehicle = fields.Many2one(comodel_name="fleet.vehicle", string="Vehicle")
 	instruction = fields.Text(name="Instruction")
+	state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('done','Done')],default = 'draft')
+	# custom_state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('done','Done')],default = 'draft')
+	
+
+	def action_confirm(self):
+		self.write({'state' : 'confirm'})
+		return True
+
+
+	def action_draft(self):
+		self.write({'state' : 'draft'})
+		return True
+
+
+	def action_done(self):
+		self.write({'state' : 'done'})
+		return True
+
 
 	@api.constrains('start_date' , 'end_date')
 	def _check_age(self):		
