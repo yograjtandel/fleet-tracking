@@ -37,10 +37,41 @@
       </field>
     </record>
 
+    <record model="ir.ui.view" id="fleet_driver_kanban">
+        <field name="name">fleet.driver.kanban</field>
+        <field name="model">fleet.driver</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+              <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <strong>
+                                    <field name="name"/>                                    
+                                </strong>
+                            </div>
+                            <div>
+                                <field name="address"/>
+                            </div>
+                            <div>
+                                <field name="birth_date"/>
+                            </div>
+                            <div>
+                                <field name="email"/>
+                                <span class="float-right">Mobile : <field name="phone"/></span>
+                            </div>
+                            
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id = "fleet_driver_action_window">
       <field name="name"> Driver </field>
       <field name="res_model">fleet.driver</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,kanban</field>
     </record>
 
 

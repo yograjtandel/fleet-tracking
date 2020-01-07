@@ -61,10 +61,33 @@
       </field>
     </record>
 
+
+
+
+    <record model="ir.ui.view" id="vehicle_brand_kanban">
+        <field name="name">fleet.vehicle.brand.kanban</field>
+        <field name="model">fleet.vehicle.brand</field>
+        <field name="arch" type="xml">
+            <kanban string="Manufacturers">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_details">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
     <record model="ir.actions.act_window" id = "vehicle_brand_action_window">
       <field name="name"> Brand Name </field>
       <field name="res_model">fleet.vehicle.brand</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,kanban</field>
     </record>
 
     <menuitem name="Vehicle Brand" id="vehicle_brand_menu_root"/>

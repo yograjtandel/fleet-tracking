@@ -63,8 +63,9 @@
       <field name="name">fleet.vehicle.contract.tree</field>
       <field name="model">fleet.vehicle.contract</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree string="contract list" decoration-info="state=='draft'" decoration-danger="state=='confirm'" decoration-success="state=='done'">
           <field name="name"/>
+          <field name="state"/>
           <field name="contract_type"/>
           <field name="start_date"/>
           <field name="end_date"/>
