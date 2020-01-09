@@ -44,6 +44,15 @@
       </field>
     </record>
 
+    <record id="action_view_contract" model="ir.actions.act_window">
+               <field name="name">Contract</field>
+               <field name="type">ir.actions.act_window</field>
+               <field name="res_model">fleet.driver</field>
+               <field name="view_mode">tree</field>
+               <field name="context">{'record_id' : active_id}</field>
+               <field name="target">new</field>
+        </record>
+
     <record model="ir.ui.view" id="fleet_driver_kanban">
         <field name="name">fleet.driver.kanban</field>
         <field name="model">fleet.driver</field>
@@ -70,6 +79,9 @@
                                 <field name="email"/>
                                 <span class="float-right">Mobile : <field name="phone"/></span>
                             </div>
+                            <div>
+                              <a type="action" name="%(action_view_contract)d">Contract</a>
+                            </div>
                             
                         </div>
                     </t>
@@ -77,6 +89,7 @@
             </kanban>
         </field>
     </record>
+
 
     <record model="ir.actions.act_window" id = "fleet_driver_action_window">
       <field name="name"> Driver </field>

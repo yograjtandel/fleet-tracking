@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="index">
+			<t t-call="website.layout">
+                <t t-set="title">Driver</t>
+            	<t t-foreach="driver" t-as="d">
+                	<p><t t-esc="d.id"/> <t t-esc="d.name"/></p>
+            	</t>
+            </t>
+        </template>
+    </data>
+</odoo>
