@@ -11,26 +11,35 @@ class customer(models.Model):
 	email = fields.Char(name="Email")
 	mobile = fields.Integer(name="Mobile")
 
-class ContractType(models.Model):
-	_name = "contract.type"
-	_description = "contract type"
+# class ContractType(models.Model):
+# 	_name = "contract.type"
+# 	_description = "contract type"
 
-	name = fields.Char(name="Contarct Type")
+# 	name = fields.Char(name="Contarct Type")
 
 class VehicleContract(models.Model):
-	_name = "fleet.vehicle.contract"
+	_name = "fleet.vehicle.trip.booking"
 	_description = "service tpye of the vehicle"
 
-
-	name = fields.Many2one(string="Name", comodel_name="fleet.customer")
-	contract_type = fields.Many2one(comodel_name="contract.type", ondelete="restrict", string="Contarct Type")
+	_rec_name = "customer"
+	customer = fields.Many2one(string="Name", comodel_name="fleet.customer")
+	# contract_type = fields.Many2one(comodel_name="contract.type", ondelete="restrict", string="Contarct Type")
 	start_date = fields.Date('Start Date', required=True ,default=fields.Date.today)
 	end_date = fields.Date('End Date', required=True ,default=fields.Date.today)
-	vehicle = fields.Many2one(comodel_name="fleet.vehicle", string="Vehicle")
-	instruction = fields.Text(name="Instruction")
+	duration = fields.Char('Duration', compute="_compute_duration")
+	no_of_person_on_trip = fields.Integer('No of persion')
+	pickup_address = fields.Text(name="Pickup Address")
+	destination_discription = fields.Text('Destination Description')
+	instruction = fields.Text(name="Other Instruction")
 	state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('done','Done')],default = 'draft')
 	# custom_state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('done','Done')],default = 'draft')
-	
+	driver_id = fields.Many2one(comodel_name="fleet.driver", ondelete="restrict",string= 'Driver')
+	vehicle_id = fields.Many2one(comodel_name="fleet.vehicle", ondelete="restrict", string='vehicle')
+
+	@api.depends("start_date","end_date")
+	def _compute_duration(self):
+		for record in self:
+			record.duration = record.end_date - record.start_date
 
 	def action_confirm(self):
 		self.write({'state' : 'confirm'})
@@ -52,3 +61,8 @@ class VehicleContract(models.Model):
 		for record in self:
 			if record.end_date < record.start_date:
 				raise ValidationError("Contract end date must be greter than start date")
+
+
+		
+
+

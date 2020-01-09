@@ -3,8 +3,11 @@ access_fleet_vehicle_brand,fleet.vehicle.brand,model_fleet_vehicle_brand,,1,1,1,
 access_fleet_vehicle_car_model,fleet.vehicle.car.model,model_fleet_vehicle_car_model,,1,1,1,1
 access_fleet_vehicle,fleet.vehicle,model_fleet_vehicle,,1,1,1,1
 access_fleet_driver,fleet.driver,model_fleet_driver,,1,1,1,1
-access_fleet_vehicle_service_type,fleet.vehicle.service.type,model_fleet_vehicle_service_type,,1,1,1,1
-access_fleet_vehicle_service,fleet.vehicle.service,model_fleet_vehicle_service,,1,1,1,1
 access_fleet_customer,fleet.customer,model_fleet_customer,,1,1,1,1
-access_contract_type,contract.type,model_contract_type,,1,1,1,1
-access_fleet_vehicle_contract,fleet.vehicle.contract,model_fleet_vehicle_contract,,1,1,1,1
+access_fleet_vehicle_trip_booking,fleet.vehicle.trip.booking,model_fleet_vehicle_trip_booking,,1,1,1,1
+access_fleet_cost,fleet.cost,model_fleet_cost,,1,1,1,1
+access_fleet_maintenance_type,fleet.maintenance.type,model_fleet_maintenance_type,,1,1,1,1
+access_fleet_odometer,fleet.odometer,model_fleet_odometer,,1,1,1,1
+access_fleet_vehicle_fule_type,access_fleet_vehicle_fule_type,model_fleet_vehicle_fule_type,base.group_user,1,1,1,1 
+
+

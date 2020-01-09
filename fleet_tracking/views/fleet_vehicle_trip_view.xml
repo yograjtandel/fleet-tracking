@@ -32,7 +32,7 @@
     </record>
 
 
-    <record model="ir.ui.view" id="contract_type_list_view">
+<!--     <record model="ir.ui.view" id="contract_type_list_view">
       <field name="name">contract.type.tree</field>
       <field name="model">contract.type</field>
       <field name="arch" type="xml">
@@ -54,30 +54,34 @@
           </sheet>
         </form>
       </field>
-    </record>
+    </record> -->
 
 
 
 
-    <record model="ir.ui.view" id="fleet_vehicle_contract_list_view">
-      <field name="name">fleet.vehicle.contract.tree</field>
-      <field name="model">fleet.vehicle.contract</field>
+    <record model="ir.ui.view" id="fleet_vehicle_trip_booking_list_view">
+      <field name="name">fleet.vehicle.trip.booking.tree</field>
+      <field name="model">fleet.vehicle.trip.booking</field>
       <field name="arch" type="xml">
         <tree string="contract list" decoration-info="state=='draft'" decoration-danger="state=='confirm'" decoration-success="state=='done'">
-          <field name="name"/>
-          <field name="state"/>
-          <field name="contract_type"/>
+          <field name="customer"/>
+          <field name="state"/>          
           <field name="start_date"/>
           <field name="end_date"/>
-          <field name="vehicle"/>
+          <field name="duration"/>
+          <field name="no_of_person_on_trip"/>
+          <field name="vehicle_id"/>
+          <field name="driver_id"/>
+          <field name="pickup_address"/>
+          <field name="destination_discription"/>
           <field name="instruction"/>
         </tree>
       </field>
     </record>
 
-    <record model = "ir.ui.view" id = "fleet_vehicle_contract_form_view">
-      <field name="name">fleet.vehicle.contract.form</field>
-      <field name="model">fleet.vehicle.contract</field>
+    <record model = "ir.ui.view" id = "fleet_vehicle_trip_booking_form_view">
+      <field name="name">fleet.vehicle.trip.booking.form</field>
+      <field name="model">fleet.vehicle.trip.booking</field>
       <field name="arch" type="xml">
         <form>
           <header>
@@ -91,11 +95,15 @@
 
           <sheet>
             <group>
-              <field name="name"/>
-              <field name="contract_type"/>
+              <field name="customer"/>        
               <field name="start_date"/>
               <field name="end_date"/>
-              <field name="vehicle"/>
+              <field name="duration"/>
+              <field name="no_of_person_on_trip"/>
+              <field name="vehicle_id"/>
+              <field name="driver_id"/>
+              <field name="pickup_address"/>
+              <field name="destination_discription"/>
               <field name="instruction"/>
             </group>
           </sheet>
@@ -104,31 +112,31 @@
     </record>
 
 
-    <record model = "ir.ui.view" id = "fleet_vehicle_contract_calendar_view">
-      <field name="name">fleet.vehicle.contract.calendar</field>
-      <field name="model">fleet.vehicle.contract</field>
+    <record model = "ir.ui.view" id = "fleet_vehicle_trip_booking_calendar_view">
+      <field name="name">fleet.vehicle.trip.booking.calendar</field>
+      <field name="model">fleet.vehicle.trip.booking</field>
       <field name="arch" type="xml">
-        <calendar string="Contract's" date_start="start_date" date_stop="end_date" color="name">
-            <field name="name"/>
+        <calendar string="Contract's" date_start="start_date" date_stop="end_date" color="customer">
+            <field name="customer"/>
         </calendar>
       </field>
     </record>
 
 
-    <record model="ir.ui.view" id="fleet_vehicle_contract_search_view">
-      <field name="name">fleet.vehicle.contract.search</field>
-      <field name="model">fleet.vehicle.contract</field>
+    <record model="ir.ui.view" id="fleet_vehicle_trip_booking_search_view">
+      <field name="name">fleet.vehicle.trip.booking.search</field>
+      <field name="model">fleet.vehicle.trip.booking</field>
       <field name="arch" type="xml">
           <search>
-              <field name="name"/>
+              <field name="customer"/>
               <field name="start_date"/>
-              <field name="contract_type" string="Contract Type"
-               filter_domain="[('contract_type', 'ilike', self)]"/>
-
+              <field name="duration" string="Contract Type"
+               filter_domain="[('duration', 'ilike', self)]"/>
+<!-- 
               <group string="Group By">
                   <filter name="group_by_vehicle" string="Vehicle"
                           context="{'group_by': 'vehicle'}"/>
-              </group>
+              </group> -->
           </search>
       </field>
     </record>
@@ -145,13 +153,13 @@
       </field>
     </record> -->
 
-    <record model="ir.actions.act_window" id = "fleet_vehicle_contract_action_window">
-      <field name="name"> Contract </field>
-      <field name="res_model">fleet.vehicle.contract</field>
+    <record model="ir.actions.act_window" id = "fleet_vehicle_trip_booking_action_window">
+      <field name="name"> Trip </field>
+      <field name="res_model">fleet.vehicle.trip.booking</field>
       <field name="view_mode">tree,form,calendar</field>
     </record> 
 
-    <menuitem name="Contract" id="fleet_vehicle_contract_menu_child" parent="vehicle_brand_menu_root" action="fleet_vehicle_contract_action_window"/>
+    <menuitem name="Contract" id="fleet_vehicle_trip_booking_menu_child" parent="vehicle_brand_menu_root" action="fleet_vehicle_trip_booking_action_window"/>
 
   </data>
 </odoo>

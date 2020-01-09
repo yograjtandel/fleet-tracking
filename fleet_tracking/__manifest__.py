@@ -12,10 +12,12 @@
     'data': [
         'security/ir.model.access.csv',
         'data/data.xml',
+        'reports/reports.xml',
         'views/vehicle_brand_view.xml',
-        'views/fleet_contract_view.xml',
-        'views/fleet_service_view.xml',
+        'views/fleet_vehicle_trip_view.xml',
         'views/fleet_vehicle_view.xml',
+        'views/fleet_cost_view.xml',
+        'views/fleet_odometer_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

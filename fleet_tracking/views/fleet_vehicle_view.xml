@@ -10,10 +10,12 @@
       <field name="model">fleet.driver</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="image"/>
           <field name="name"/>
-          <field name="address"/>
+          <field name="driving_licence_nunmber"/>
           <field name="phone"/>
           <field name="email"/>
+          <field name="address"/>
           <field name="birth_date"/>
         </tree>
       </field>
@@ -25,12 +27,17 @@
       <field name="arch" type="xml">
         <form>
           <sheet>
-            <group>
-              <field name="name"/>
-              <field name="address"/>
-              <field name="phone"/>
-              <field name="email"/>
-              <field name="birth_date"/>
+            <field name="image" widget="image" class="oe_avatar"/>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>              
+              <h2><field name="name"/></h2>
+            </div>
+            <group>     
+                <field name="driving_licence_nunmber"/>              
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="address"/>
+                <field name="birth_date"/>
             </group>
           </sheet>
         </form>
@@ -49,6 +56,9 @@
                                 <strong>
                                     <field name="name"/>                                    
                                 </strong>
+                            </div>
+                            <div>
+                                <field name="driving_licence_nunmber"/>
                             </div>
                             <div>
                                 <field name="address"/>

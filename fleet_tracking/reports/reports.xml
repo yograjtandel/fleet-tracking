@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <report
+    id="trip_report"
+    model="fleet.vehicle.trip.booking"
+    string="Trip Report"
+    name="fleet_tracking.trip_report_template"
+    file="fleet_tracking.trip_report"
+    report_type="qweb-pdf"
+    />
+
+    <template id="trip_report_template">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <p><h1>name</h1><span t-field="o.customer"/></p>
+                </div>
+            </t>
+        </t>
+    </t>
+    </template>
+</odoo>

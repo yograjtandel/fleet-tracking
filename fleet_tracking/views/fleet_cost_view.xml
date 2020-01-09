@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <data>
+    <record model='ir.ui.view' id = 'fleet_cost_list_view'>
+      <field name= "name">fleet.cost.tree</field>
+      <field name="model">fleet.cost</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="vehicle"/>
+          <field name="date"/>
+          <field name="maintenance_type"/>
+          <field name="cost"/>
+          <field name="note"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="fleet_cost_form_view">
+      <field name="name">fleet.cost.form</field>
+      <field name="model">fleet.cost</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="vehicle"/>
+              <field name="date"/>
+              <field name="maintenance_type"/>
+              <field name="cost"/>
+              <field name="note"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id = "fleet_cost_action_window">
+      <field name="name"> Cost </field>
+      <field name="res_model">fleet.cost</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Cost" id="fleet_cost_menu_child" parent="vehicle_brand_menu_root" action="fleet_cost_action_window"/>
+
+
+  </data>
+</odoo>

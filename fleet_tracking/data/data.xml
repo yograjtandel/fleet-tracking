@@ -13,30 +13,20 @@
 		<field name="name">Chevrolet</field>
 	</record>
 
-	<record id="contract_type_1" model="contract.type">
-		<field name="name">Daily</field>
-	</record>
-	<record id="contract_type_2" model="contract.type">
-		<field name="name">Weekly</field>
-	</record>
-	<record id="contract_type_3" model="contract.type">
-		<field name="name">Monthly</field>
-	</record>
-	<record id="contract_type_4" model="contract.type">
-		<field name="name">Yearly</field>
-	</record>
-
-
-	<record id="service_type_1" model="fleet.vehicle.service.type">
-		<field name="name">Wash</field>
-	</record>
-	<record id="service_type_2" model="fleet.vehicle.service.type">
+	<record id="maintenance_type_1" model="fleet.maintenance.type">
 		<field name="name">Tire</field>
 	</record>
-	<record id="service_type_3" model="fleet.vehicle.service.type">
-		<field name="name">Routine Maintenance</field>
+	<record id="maintenance_type_2" model="fleet.maintenance.type">
+		<field name="name">Service</field>
 	</record>
-	<record id="service_type_4" model="fleet.vehicle.service.type">
+	<record id="maintenance_type_3" model="fleet.maintenance.type">
+		<field name="name">Fule</field>
+	</record>
+	<record id="maintenance_type_4" model="fleet.maintenance.type">
 		<field name="name">Repair</field>
 	</record>
+	<record id="maintenance_type_5" model="fleet.maintenance.type">
+		<field name="name">Wash</field>
+	</record>
+
 </odoo>

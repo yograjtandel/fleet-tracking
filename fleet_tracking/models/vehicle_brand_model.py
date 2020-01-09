@@ -9,6 +9,7 @@ class VehicleBrand(models.Model):
 
 
 	name = fields.Char(name="Name", required=True)
+	logo = fields.Image('logo' ,max_width=128, max_height=128)
 
 
 class CarModel(models.Model):
