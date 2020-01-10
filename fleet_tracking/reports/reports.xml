@@ -17,46 +17,46 @@
                 <div class="page">
                   <table>
                     <tr>
-                      <td><h1><b>Name : </b></h1></td><td><span t-field="o.customer"/></td>
+                      <td> <b>Name : </b> </td><td><span t-field="o.customer"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Start Date : </b></h1></td><td><span t-field="o.customer"/></td>
+                      <td> <b>Start Date : </b> </td><td><span t-field="o.customer"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>End Date : </b></h1></td><td><span t-field="o.start_date"/></td>
+                      <td> <b>End Date : </b> </td><td><span t-field="o.start_date"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Duration : </b></h1></td><td><span t-field="o.end_date"/></td>
+                      <td> <b>Duration : </b> </td><td><span t-field="o.end_date"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>No of Traveller : </b></h1></td><td><span t-field="o.no_of_person_on_trip"/></td>
+                      <td> <b>No of Traveller : </b> </td><td><span t-field="o.no_of_person_on_trip"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Pickup Address : </b></h1></td><td><span t-field="o.pickup_address"/></td>
+                      <td> <b>Pickup Address : </b> </td><td><span t-field="o.pickup_address"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Destination : </b></h1></td><td><span t-field="o.destination_discription"/></td>
+                      <td> <b>Destination : </b> </td><td><span t-field="o.destination_discription"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Instruction : </b></h1></td><td><span t-field="o.instruction"/></td>
+                      <td> <b>Instruction : </b> </td><td><span t-field="o.instruction"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Driver : </b></h1></td><td><span t-field="o.driver_id"/></td>
+                      <td> <b>Driver : </b> </td><td><span t-field="o.driver_id"/></td>
                     </tr>
                     <tr>
-                      <td><h1><b>Vehicle : </b></h1></td><td><span t-field="o.vehicle_id"/></td>
+                      <td> <b>Vehicle : </b> </td><td><span t-field="o.vehicle_id"/></td>
                     </tr>
                   </table>
       <!--               <p></p>
                     <p></p>
-                    <p><h1>End Date</h1><span t-field="o.start_date"/></p>
-                    <p><h1>Duration</h1><span t-field="o.end_date"/></p>
-                    <p><h1>No of Traveller</h1><span t-field="o.no_of_person_on_trip"/></p>
-                    <p><h1>Pickup Address</h1><span t-field="o.pickup_address"/></p>
-                    <p><h1>Destination</h1><span t-field="o.destination_discription"/></p>
-                    <p><h1>Instruction</h1><span t-field="o.instruction"/></p>
-                    <p><h1>Driver</h1><span t-field="o.driver_id"/></p>
-                    <p><h1>Vehicle</h1><span t-field="o.vehicle_id"/></p> -->
+                    <p> End Date <span t-field="o.start_date"/></p>
+                    <p> Duration <span t-field="o.end_date"/></p>
+                    <p> No of Traveller <span t-field="o.no_of_person_on_trip"/></p>
+                    <p> Pickup Address <span t-field="o.pickup_address"/></p>
+                    <p> Destination <span t-field="o.destination_discription"/></p>
+                    <p> Instruction <span t-field="o.instruction"/></p>
+                    <p> Driver <span t-field="o.driver_id"/></p>
+                    <p> Vehicle <span t-field="o.vehicle_id"/></p> -->
                 </div>
             </t>
         </t>
