@@ -11,9 +11,9 @@ class  driver(models.Model):
 	driving_licence_nunmber = fields.Char(name="Driving licence number", required=True)
 	phone = fields.Integer(name="phone", required=True)
 	email = fields.Char(name="Email")
-	address = fields.Text(name="Address", required=True)
+	address = fields.Text(name="Address")
 	image = fields.Image('Image', max_width=90, max_height=90, widget="image")
-	birth_date = fields.Date('Birth Date', required=True ,default=fields.Date.today)
+	birth_date = fields.Date('Birth Date' ,default=fields.Date.today)
 
 	@api.constrains('birth_date')
 	def _check_age(self):		

@@ -6,55 +6,78 @@
                 <t t-set="title">Driver</t>
                 <div class="oe_structure"/>
                 <div class="oe_structure">
-                    <table class="table table-sm">
-                        <thead>
+                    <div class="container" >    
+                        <a style="margin-top: 20px; margin-bottom: 20px;" class="btn btn-secondary btn-lg" role="button" t-attf-href="/create/">Create</a>
+                    </div>
+                    <div class="container">
+                    
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Driving Licence Nunmber</th>
-                                <th></th>
-                                <th></th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Driving Licence Nunmber</th>
+                                <th scope="col">Birth Date</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
-                    	<t t-foreach="driver" t-as="d">
+                        <t t-if="create">
+                            <tr>
+                                <form method="post" action="/save/">
+                                        <input class="form-control" type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="id"/>
+                                        <td><input class="form-control" type="text" name="name"/></td>
+
+                                        <td><input class="form-control" type="text" name="phone"/></td>
+
+                                        <td>
+                                            <input class="form-control" type="text" name="driving_licence_nunmber"/>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="date" name="birth_date"/>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-secondary"><i class="fa fa-floppy-o"/></button>
+                                        </td>
+                                    </form>
+                                    <td></td>
+                            </tr>
+                        </t>
+                    	<t t-foreach="driver" t-as="dr">
                         	<tr>
-                                <td><t t-esc="d.name"/></td>
-                                <td><t t-esc="d.phone"/></td>
-                                <td><t t-esc="d.driving_licence_nunmber"/></td>
-                                <td><a t-attf-href="/update/#{slug(d)}/"><i class="fa fa-edit"/></a></td>
-                               
-                                <td><a t-attf-href="/delete/#{slug(d)}/"><i class="fa fa-trash"/></a></td>
+                                <t t-if="d != None and dr.id == d.id">
+                                    <form method="post" action="/update/">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="id" t-att-value="d.id"/>
+                                        <td><input class="form-control" type="text" name="name" t-att-value="d.name"/></td>
+
+                                        <td><input class="form-control" type="text" name="phone" t-att-value="d.phone"/></td>
+                                        <td>
+                                            <input type="text" class="form-control" name="driving_licence_nunmber" t-att-value="d.driving_licence_nunmber"/>
+                                        </td>
+                                        <td><input class="form-control" type="date" name="phone" t-att-value="d.birth_date"/></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-secondary"><i class="fa fa-floppy-o"/></button>
+                                        </td>
+                                    </form>
+                                    <td><a class="btn btn-secondary" role="button" t-attf-href="/delete/{{slug(dr)}}/"><i class="fa fa-trash"/></a></td>                                    
+                                </t>
+
+                                <t t-else="">
+                                    <td><t t-esc="dr.name"/></td>
+                                    <td><t t-esc="dr.phone"/></td>
+                                    <td><t t-esc="dr.driving_licence_nunmber"/></td>
+                                    <td><t t-esc="dr.birth_date"/></td>
+                                    <td>
+                                        <a class="btn btn-secondary" role="button" t-attf-href="/edit/{{slug(dr)}}/"><i class="fa fa-edit"/></a>
+                                    </td>
+                                    <td><a class="btn btn-secondary" role="button" t-attf-href="/delete/{{slug(dr)}}/"><i class="fa fa-trash"/></a></td>
+                                </t>
                             </tr>
                     	</t>
                     </table>
                 </div>
-            </t>
-        </template>
-
-        <template id="create_update_form">
-            <t t-call="website.layout">
-                <t t-set="title">Driver</t>
-                <div class="oe_structure"/>
-                <div class="oe_structure">
-<!--                                         <table class="table table-sm">
-    
-                            <tr>
-                                <td><t t-esc="driver_id.name"/></td>
-                                <td><t t-esc="driver_id.phone"/></td>
-                                <td><t t-esc="driver_id.driving_licence_nunmber"/></td>
-                            </tr>
-                      
-                    </table> -->
-
-                <form class="oe_signup_form" role="form" method="post" >
-                    <input type="text" name="name" t-att-value="driver_id.name"/>
-                    <input type="text" name="phone" t-att-value="driver_id.phone"/>
-                    <!-- <div class="text-center oe_login_buttons pt-3">
-                        <button type="submit" class="btn btn-primary btn-block"> Sign up</button>
-                        <a t-attf-href="/web/login?{{ keep_query() }}" class="btn btn-link btn-sm" role="button">Already have an account?</a>
-                        <div class="o_login_auth"/>
-                    </div> -->
-                </form>
                 </div>
             </t>
         </template>
