@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <odoo>
+    <record id='fleet_dashboard_kanban_view' model='ir.ui.view'>
+      <field name="name">fleet.dashboard.kanban</field>
+      <field name="model">fleet.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="oe_background_grey o_kanban_dashboard o_account_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                      <div>
+                        <field name="kanban_dashboard_graph" graph_type="bar" widget="dashboard_graph"/>
+                      </div>
+                    </t>
+            </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="fleet_dashboard_kanban_action_window" model="ir.actions.act_window">
+        <field name="name">Contract Overview</field>
+        <field name="res_model">fleet.dashboard</field>
+        <field name="view_mode">kanban</field>
+    </record>
+
+
+    <menuitem id="dashboard_menu" name="Overview" action="fleet_dashboard_kanban_action_window" parent="fleet_tracking.vehicle_brand_menu_root" sequence="1"/>
+</odoo>

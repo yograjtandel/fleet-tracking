@@ -40,7 +40,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Odometer" id="fleet_cost_menu_child" parent="vehicle_brand_menu_root" action="fleet_odometer_action_window"/>
+    <menuitem name="Odometer" id="fleet_odometer_menu_child" parent="fleet_tracking.vehicle_vehicle_menu_child" action="fleet_odometer_action_window"/>
 
 
   </data>

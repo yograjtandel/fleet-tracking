@@ -35,12 +35,12 @@
     </record>
 
     <record model="ir.actions.act_window" id = "fleet_cost_action_window">
-      <field name="name"> Cost </field>
+      <field name="name"> Services </field>
       <field name="res_model">fleet.cost</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Cost" id="fleet_cost_menu_child" parent="vehicle_brand_menu_root" action="fleet_cost_action_window"/>
+    <menuitem name="Services" id="fleet_cost_menu_child" parent="fleet_tracking.vehicle_vehicle_menu_child" action="fleet_cost_action_window"/>
 
 
   </data>

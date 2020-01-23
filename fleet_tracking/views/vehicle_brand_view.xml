@@ -9,7 +9,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="brand_name"/>
+          <field name="brand_id"/>
         </tree>
       </field>
     </record>
@@ -22,7 +22,7 @@
           <sheet>
             <group>
               <field name="name"/>
-              <field name="brand_name"/>
+              <field name="brand_id"/>
             </group>
           </sheet>
         </form>
@@ -30,7 +30,7 @@
     </record>
 
     <record model="ir.actions.act_window" id = "vehicle_model_action_window">
-      <field name="name"> model Name </field>
+      <field name="name"> Model </field>
       <field name="res_model">fleet.vehicle.car.model</field>
       <field name="view_mode">tree,form</field>
     </record>
@@ -53,7 +53,7 @@
       <field name="arch" type="xml">
         <form>
           <sheet>            
-            <field name="logo" widget="image" class="oe_avatar"/>
+            <field name="image_128" widget="image" class="oe_avatar"/>
             <div class="oe_title">
               <label for="name" class="oe_edit_only"/>              
               <h2><field name="name"/></h2>
@@ -65,19 +65,26 @@
 
 
 
-
-    <record model="ir.ui.view" id="vehicle_brand_kanban">
+    <record id='vehicle_brand_kanban' model='ir.ui.view'>
         <field name="name">fleet.vehicle.brand.kanban</field>
         <field name="model">fleet.vehicle.brand</field>
         <field name="arch" type="xml">
-            <kanban string="Manufacturers">
+            <kanban>
+                <field name="id"/>
+                <field name="name" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_details">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1>
-                                <field name="name"/>
-                            </h1>
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <a type="open" href="#" class="o_kanban_image oe_kanban_action">
+                                <img alt="Open" t-att-src="kanban_image('fleet.vehicle.brand', 'image_128', record.id.raw_value)" class="img-fluid" style="width:100px;"/>
+                            </a>
+                            <div class="oe_kanban_details">
+                                <h4 class="oe_partner_heading">
+                                    <a type="open" class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </a>
+                                </h4>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -85,20 +92,18 @@
         </field>
     </record>
 
-
     <record model="ir.actions.act_window" id = "vehicle_brand_action_window">
       <field name="name"> Brand Name </field>
       <field name="res_model">fleet.vehicle.brand</field>
       <field name="view_mode">tree,form,kanban</field>
     </record>
 
-    <menuitem name="Vehicle Brand" id="vehicle_brand_menu_root"/>
+    <menuitem name="Fleet Tracking" id="vehicle_brand_menu_root" web_icon="fleet_tracking,static/description/icon.png"/>
 
-    
 
-    <menuitem name="Models" id="vehicle_model_menu_child" parent="vehicle_brand_menu_root" action="vehicle_model_action_window"/>
+    <menuitem name="Configuration" id="vehicle_menufacturers_menu" parent="vehicle_brand_menu_root" sequence="4"/>
 
-    <menuitem name="Manufacturers" id="vehicle_brand_menu_child" parent="vehicle_brand_menu_root" action="vehicle_brand_action_window"/>
+    <menuitem name="Manufacturers" id="vehicle_menufacturers_menu_child" parent="vehicle_menufacturers_menu" action="vehicle_brand_action_window"/>
 
   </data>
 </odoo>
