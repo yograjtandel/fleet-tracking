@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+	<record id="dashboard" model="fleet.dashboard">
+		<field name="name">True</field>
+	</record>
+
 	<record id="brand_honda" model="fleet.vehicle.brand">
 		<field name="name">Honda</field>
 		<field name="image_128" type="base64" file="fleet_tracking/static/img/brand_honda-image.png"/>

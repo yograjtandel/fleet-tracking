@@ -9,12 +9,15 @@ class FleetDashboard(models.Model):
 	_name = "fleet.dashboard"
 	_description="dashboard"
 
-	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph',store=True)
+	name=fields.Boolean(name="Name", default=True)
+	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
 
+	@api.depends("name")
 	def _kanban_dashboard_graph(self):
+		print("ssssssssssssssssssssssssssss")
 		for journal in self:
 			journal.kanban_dashboard_graph = json.dumps(journal.get_bar_graph_datas())
-		print("###########",journal.kanban_dashboard_graph)
+			print("###########",journal.kanban_dashboard_graph)
 
 		
 

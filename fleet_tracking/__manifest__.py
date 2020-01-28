@@ -10,8 +10,13 @@
     """,
 
     'data': [
+        'security/fleet_security.xml',
         'security/ir.model.access.csv',
         'data/data.xml',
+
+        'wizard/cancelled_reason.xml',
+
+        
         'reports/reports.xml',
         'views/vehicle_brand_view.xml',
         'views/fleet_vehicle_view.xml',

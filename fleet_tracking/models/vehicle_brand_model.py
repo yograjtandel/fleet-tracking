@@ -12,6 +12,12 @@ class CarModel(models.Model):
 	image_128 = fields.Image(related='brand_id.image_128', readonly=False, store=True)
 
 
+	def name_get(self):
+		name=[]
+		for model in self:
+			name.append((model.id,str(model.brand_id.name)+"-"+str(model.name)))
+		return name
+
 class VehicleBrand(models.Model):
 	_name = "fleet.vehicle.brand"
 	_description = "brand detail of the vehicle"

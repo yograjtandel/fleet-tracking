@@ -43,33 +43,6 @@
     </record>
 
 
-<!--     <record model="ir.ui.view" id="contract_type_list_view">
-      <field name="name">contract.type.tree</field>
-      <field name="model">contract.type</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-        </tree>
-      </field>
-    </record>
-
-    <record model = "ir.ui.view" id = "contract_type_form_view">
-      <field name="name">contract.type.form</field>
-      <field name="model">contract.type</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <group>
-              <field name="name"/>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record> -->
-
-
-
-
     <record model="ir.ui.view" id="fleet_vehicle_contract_booking_list_view">
       <field name="name">fleet.vehicle.contract.booking.tree</field>
       <field name="model">fleet.vehicle.contract.booking</field>
@@ -93,10 +66,17 @@
       <field name="arch" type="xml">
         <form>
           <header>
+            <button string = "Draft" type="object" name="action_draft" states="confirm" class = "oe_highlight" />
             <button string = "Confirm" type="object" name="action_confirm" states="draft" class = "oe_highlight" />
-            <button string = "Draft" type="object" name="action_draft" states="confirm,done" class = "oe_highlight" />
-            <button string = "Done" type="object" name="action_done" states="draft,confirm" class = "oe_highlight" />
-            <field name="state" widget="statusbar" status_visible="draft,confirm,done"/>
+
+             <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Cancelled" type="action" class="oe_highlight" states="draft,confirm"/>
+        
+            <button string = "Running" type="object" name="action_running" states="confirm" class = "oe_highlight" />
+
+            <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Closed" type="action" class="oe_highlight" states="running"/>
+            
+            <button string = "ReNew" type="object" name="action_renew_contract" states="closed" class = "oe_highlight" />
+            <field name="state" widget="statusbar" status_visible="draft,confirm,cancle,done"/>
           </header>
 
           <sheet>
@@ -113,8 +93,12 @@
               <field name="start_date"/>
               <field name="end_date"/>
               <field name="duration"/>
-              <field name="not_required_vehicle_ids" invisible="1"/>
+              <field name="required_vehicle_ids" invisible="1"/>
               <field name="vehicle_id" widget="many2many_tags"/>
+              <field name="cancelled_reason" readonly="1" attrs="{'invisible': [('cancelled_reason', '=', False)]}"/>
+              <field name="cancelled_date" readonly="1" attrs="{'invisible': [('cancelled_date', '=', False)]}"/>
+              <field name="closed_reason" readonly="1" attrs="{'invisible': [('closed_reason', '=', False)]}"/>
+              <field name="closed_date" readonly="1" attrs="{'invisible': [('closed_date', '=', False)]}"/>
               <field name="instruction"/>
             </group>
           </sheet>
@@ -175,11 +159,14 @@
                 <field name="duration"/>
                 <field name="vehicle_id"/>
                 <field name="instruction"/>
-                <field name="model_id"/>
+                <!-- <field name="model_id"/> -->
+
+                <field name="kanban_dashboard_graph" invisible="1"/>
                 <templates>
                     <t t-name="kanban-box">
                       <div>
-                        <field name="kanban_dashboard_graph" graph_type="bar" widget="dashboard_graph"/>
+                        <t t-set="dashboard" t-value-="record.kanban_dashboard_graph"/>
+                        <t t-esc="dashboard"/>
                       </div>
                     </t>
             </templates>
@@ -237,13 +224,44 @@
       </field>
     </record> -->
 
+
+
+
     <record model="ir.actions.act_window" id = "fleet_vehicle_contract_booking_action_window">
       <field name="name"> Contract </field>
       <field name="res_model">fleet.vehicle.contract.booking</field>
       <field name="view_mode">tree,form,calendar,kanban,dashboard</field>
     </record>
 
-        <record model='ir.ui.view' id = 'fleet_vehicle_contract_trip_list_view'>
+    <record model="ir.ui.view" id="fleet_contract_renew_form_view">
+      <field name="name">fleet.contract.renew.form</field>
+      <field name="model">fleet.contract.renew</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="contract_id"/>
+              <field name="renew_date" readonly="1"/>
+              <field name="required_vehicle_ids" invisible="1"/>
+              <field name="start_date"/>
+              <field name="end_date"/>
+              <field name="duration"/>
+              <field name="vehicle_id"/>
+              <field name="instruction"/> 
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id = "fleet_contract_renew_action_window">
+      <field name="name"> Renew Contract </field>
+      <field name="res_model">fleet.contract.renew</field>
+      <field name="view_mode">form</field>
+    </record> 
+
+
+    <record model='ir.ui.view' id = 'fleet_vehicle_contract_trip_list_view'>
       <field name= "name">fleet.vehicle.contract.trip.tree</field>
       <field name="model">fleet.vehicle.contract.trip</field>
       <field name="arch" type="xml">

@@ -46,3 +46,10 @@ class vehicle(models.Model):
 	contract_id = fields.Many2one(comodel_name="fleet.vehicle.trip.booking")
 	image_128 = fields.Image(related='model_id.image_128', readonly=False, store=True)
 
+	def name_get(self):
+		# if self.id == None:
+		# 	return []
+		name=[]
+		for vehicle in self:
+			name.append((vehicle.id,str(vehicle.model_id.brand_id.name)+"-"+str(vehicle.model_id.name)+"/"+str(vehicle.license_plate)+"-"+str(vehicle.color)))
+		return(name)

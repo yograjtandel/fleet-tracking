@@ -6,8 +6,19 @@
       <field name="model">fleet.dashboard</field>
         <field name="arch" type="xml">
             <kanban create="false" class="oe_background_grey o_kanban_dashboard o_account_kanban">
+                <!-- <field name="kanban_dashboard_graph" invisible="1"/> -->
+                <field name="name"/>
                 <templates>
+<!--                     <t t-name="kanban-box">
+                        <div>
+                        <t t-set="dashboard" t-value-="record.kanban_dashboard_graph"/>
+                        <t t-esc="dashboard"/>
+                      </div>
+                    </t> -->
                     <t t-name="kanban-box">
+                    <t t-debug=""/>
+                    <t t-esc="sssssssssssssssssssssaaaa"/>
+                        <!-- <field name="name"/> -->
                       <div>
                         <field name="kanban_dashboard_graph" graph_type="bar" widget="dashboard_graph"/>
                       </div>
@@ -20,7 +31,7 @@
     <record id="fleet_dashboard_kanban_action_window" model="ir.actions.act_window">
         <field name="name">Contract Overview</field>
         <field name="res_model">fleet.dashboard</field>
-        <field name="view_mode">kanban</field>
+        <field name="view_mode">kanban,form</field>
     </record>
 
 
