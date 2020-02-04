@@ -2,7 +2,7 @@
 {
     'name': "fleet_tracking",
     'version' : '1.0',
-    'depends' : ['base','website','web_dashboard'],
+    'depends' : ['base','web_dashboard','portal'],
     'author' : 'yog',
     'category' : 'Category',
     'description ' : """
@@ -24,7 +24,9 @@
         'views/fleet_cost_view.xml',
         'views/fleet_odometer_view.xml',
         'views/fleet_odometer_templet.xml',
-        'views/fleet_dashboard_view.xml'
+        'views/fleet_dashboard_view.xml',
+        'views/registration.xml',
+        'views/homepage_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -12,7 +12,6 @@ class customer(models.Model):
 	name = fields.Char(name="Name")
 	email = fields.Char(name="Email")
 	mobile = fields.Integer(name="Mobile")
-
 	street1 = fields.Char(name="Street1")
 	street2 = fields.Char(name="Street2")
 	city =fields.Char(name="City")
@@ -28,6 +27,7 @@ class VehicleContract(models.Model):
 	_description = "service tpye of the vehicle"
 	_rec_name = "customer"
 
+	company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 	customer = fields.Many2one(string="Customer Name", comodel_name="fleet.customer", required=True,tracking=True,)
 	start_date = fields.Date('Start Date', required=True ,default=fields.Date.today)
 	end_date = fields.Date('End Date', required=True ,default=fields.Date.today)
@@ -44,7 +44,8 @@ class VehicleContract(models.Model):
 	closed_reason=fields.Many2one(comodel_name="fleet.cancelled.reason", string="Cancelled Reason")
 	closed_date=fields.Date('Cancelled Date', default=None)
 	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
-
+	renew_visible=fields.Boolean(string="visible",compute="_compute_visible")
+	renew_detail=fields.One2many(comodel_name="fleet.contract.renew", inverse_name ='contract_id', string="ReNew", stored=False)
 
 	@api.depends("start_date","end_date")
 
@@ -77,8 +78,15 @@ class VehicleContract(models.Model):
 			}
 
 
-
-
+	def _compute_visible(self):
+		# booking_env1 = self.env['fleet.vehicle.contract.booking'].search([])
+		
+		
+		if self.id:
+			print("++++++++++++",self.id)
+			self.renew_visible=True
+		else:
+			self.renew_visible=False
 	# @api.onchange("start_date","end_date")
 	# def _onchange_dates(self):
 	# 	booking_env = self.env['fleet.vehicle.contract.booking'].search([])
@@ -124,9 +132,6 @@ class VehicleContract(models.Model):
 		return True
 
 
-	def action_cancelled(self):
-		self.write({'state' : 'cancelled'})
-		return True
 
 	# def action_renew(self,**kwargs):
 	# 	print(self)
@@ -239,7 +244,7 @@ class ContractRenew(models.Model):
 	required_vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle",compute="_compute_available_vehicle", string='not Vehicle')
 	vehicle_id = fields.Many2many(comodel_name="fleet.vehicle",domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
 	instruction = fields.Text(name="Other Instruction")
-	
+	state = fields.Selection(selection = [('confirm','Confirm'),('cancelled','Cancelled'),('running','Running'),('closed','Closed'),('renew','ReNew')],default = 'confirm')	
 	@api.model
 	def create(self,vals):
 		self.env["fleet.vehicle.contract.booking"].browse([vals['contract_id']]).write({'state' : 'renew'})
@@ -264,6 +269,29 @@ class ContractRenew(models.Model):
 		vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
 		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 
+	def action_renew_contract(self,**args):
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'ReNew Contract',
+			'view_mode': 'form',
+			'res_model': 'fleet.contract.renew',
+			'target': 'new',
+			'context': {'default_contract_id': self.id,
+					'default_instruction':self.instruction,
+					'default_vehicle_id':self.vehicle_id.ids
+					}
+		}
+
+	
+	def action_confirm(self):
+		self.write({'state' : 'confirm'})
+		return True
+
+	def action_running(self):
+		self.write({'state' : 'running'})
+		return True
+
+		
 # class ContractRenew(models.Model):
 # 	_name="fleet.contract.renew"
 # 	_inherit="fleet.vehicle.contract.booking"

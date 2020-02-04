@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>  
+
+<template id="customer_index1">
+   <t t-call="portal.portal_layout">
+       <ul class="nav nav-pills" style="justify-content:center; margin:30px;}">
+          <li>
+              
+               <a class="nav-link active" href="#user" data-toggle="tab">Customer</a>
+            <!-- Default unchecked -->
+          <!--   <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" name="user_type" id="customer" value="customer" checked="True"  />
+              <label class="custom-control-label" style="padding-right: 10px" for="customer">Customer</label>
+            </div> -->
+          </li>
+          <li>
+              <a class="nav-link" href="#driver" data-toggle="tab">Driver</a>
+
+              <!-- Default checked -->
+         <!--    <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" value="driver" name="user_type" id="driver"  />
+              <label class="custom-control-label" style="padding-right: 10px" for="driver">Driver</label>
+            </div> -->
+          </li>
+          <li>
+              <a class="nav-link" href="#sales_person" data-toggle="tab">Sales Person</a>
+          </li>
+          <li>
+              <a class="nav-link" href="#manager" data-toggle="tab">Manager</a>
+            
+              <!-- <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" value="manager" name="user_type" id="manager" />
+                <label class="custom-control-label" style="padding-right: 10px" for="manager">Manager</label>
+              </div> -->
+          </li>
+
+       </ul>
+       <div class="tab-content" align="center">
+           <div id="user" class="tab-pane active">
+               <form method="post" action="/registration/user">
+                   <table>
+                       <tr>
+                           <td>User Name</td>
+                           <td><input class="form-control" type="text" name="username"/></td>
+                       </tr>
+                       <tr>
+                           <td>Email</td>
+                           <td><input class="form-control" type="text" name="email"/></td>
+                       </tr>
+                       <tr>
+                           <td>Password</td>
+                           <td><input class="form-control" type="text" name="password"/></td>
+                       </tr>
+                       <tr>
+                           <td><t t-esc="user_type"/></td>
+                           <td>
+                               <button class="btn btn-secondary" type="submit" style="margin:20px;">Submit</button>
+                           </td>
+                       </tr>
+                   </table>
+               </form>
+           </div>
+          <div id="driver" class="tab-pane">
+               <form method="post" action="/registration/driver">
+                   <table>
+                       <tr>
+                           <td>User Name</td>
+                           <td><input class="form-control" type="text" name="username"/></td>
+                       </tr>
+                       <tr>
+                           <td>Email</td>
+                           <td><input class="form-control" type="text" name="email"/></td>
+                       </tr>
+                       <tr>
+                           <td>Password</td>
+                           <td><input class="form-control" type="text" name="password"/></td>
+                       </tr>
+                       <tr>
+                           <td><t t-esc="user_type"/></td>
+                           <td>
+                               <button class="btn btn-secondary" type="submit" style="margin:20px;">Submit</button>
+                           </td>
+                       </tr>
+                   </table>
+               </form>
+          </div>
+
+           <div id="manager" class="tab-pane">
+               <form method="post" action="/registration/manager">
+                   <table>
+                       <tr>
+                           <td>User Name</td>
+                           <td><input class="form-control" type="text" name="username"/></td>
+                       </tr>
+                       <tr>
+                           <td>Email</td>
+                           <td><input class="form-control" type="text" name="email"/></td>
+                       </tr>
+                       <tr>
+                           <td>Password</td>
+                           <td><input class="form-control" type="text" name="password"/></td>
+                       </tr>
+                       <tr>
+                           <td>Company</td>
+                           <td><input class="form-control" type="text" name="company"/></td>
+                       </tr>
+                       <tr>
+                           <td>Currency</td>
+                           <td>
+                               <select class="btn btn-secondary dropdown-toggle"  name="currency">
+                                   <t t-foreach="currency" t-as="cur">
+                                       <option t-attf-value="{{cur.name}}"><t t-esc="cur.name"/></option>
+                                   </t>
+                               </select>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td></td>
+                           <td> <button class="btn btn-secondary" type="submit" style="margin:20px;">Submit</button> </td>
+                       </tr>
+                   </table>
+               </form>
+           </div>
+       </div>
+   </t>
+</template>
+
+</odoo> 

@@ -10,6 +10,7 @@
       <field name="model">fleet.driver</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="company_id"/>
           <field name="image"/>
           <field name="name"/>
           <field name="driving_licence_nunmber"/>
@@ -103,6 +104,8 @@
       <field name="model">fleet.vehicle</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="company_id"/>
+          
               <field name="model_id"/>
               <field name="license_plate"/>
               <!-- <field name="driver"/> -->

@@ -48,6 +48,8 @@
       <field name="model">fleet.vehicle.contract.booking</field>
       <field name="arch" type="xml">
         <tree string="contract list" decoration-info="state=='draft'" decoration-danger="state=='confirm'" decoration-success="state=='done'">
+          
+          <field name="company_id"/>
           <field name="customer"/>
           <field name="state"/>          
           <field name="start_date"/>
@@ -76,7 +78,7 @@
             <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Closed" type="action" class="oe_highlight" states="running"/>
             
             <button string = "ReNew" type="object" name="action_renew_contract" states="closed" class = "oe_highlight" />
-            <field name="state" widget="statusbar" status_visible="draft,confirm,cancle,done"/>
+            <field name="state" widget="statusbar" status_visible="draft,confirm,cancle,running,closed,renew"/>
           </header>
 
           <sheet>
@@ -100,7 +102,23 @@
               <field name="closed_reason" readonly="1" attrs="{'invisible': [('closed_reason', '=', False)]}"/>
               <field name="closed_date" readonly="1" attrs="{'invisible': [('closed_date', '=', False)]}"/>
               <field name="instruction"/>
+              <field name="renew_visible" invisible="1"/> 
             </group>
+            <notebook attrs="{'invisible': [('renew_visible', '=', False)]}">
+              <page string="Renew Detail">
+                <field name="renew_detail" >
+                <tree>
+                  <field name="renew_date" readonly="1"/>
+                  <field name="state"/>          
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <field name="duration"/>
+                  <field name="vehicle_id"/>
+                  <field name="instruction"/> 
+                </tree>
+              </field>
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>
@@ -239,6 +257,19 @@
       <field name="arch" type="xml">
         <form>
           <sheet>
+            <header>
+
+            <button string = "Confirm" type="object" name="action_confirm" states="cancelled" class = "oe_highlight" />
+
+            <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Cancelled" type="action" class="oe_highlight" states="confirm"/>
+            
+            <button string = "Running" type="object" name="action_running" states="renew,confirm" class = "oe_highlight" />
+
+            <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Closed" type="action" class="oe_highlight" states="running"/>
+            
+            <button string = "ReNew" type="object" name="action_renew_contract" states="closed" class = "oe_highlight" />
+            <field name="state" widget="statusbar" status_visible="confirm,cancelled,running,closed,renew"/>
+          </header>
             <group>
               <field name="contract_id"/>
               <field name="renew_date" readonly="1"/>
@@ -285,7 +316,7 @@
           <sheet>
             <group>
               <field name="date" readonly="1"/>
-              <field name="contract_id"/>
+              <field name="contract_id" readonly="1"/>
               <field name="driver_id"/>
               <field name="distance_travelled"/>
               <field name="no_of_person_in_trip"/>

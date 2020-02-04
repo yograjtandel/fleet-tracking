@@ -6,6 +6,7 @@ from odoo.osv import expression
 class  driver(models.Model):
 	_name = "fleet.driver"
 
+	company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 	name = fields.Char(name = "Driver Name", required=True , string="Driver Name")
 	driving_licence_nunmber = fields.Char(name="Driving licence number", required=True)
 	phone = fields.Integer(name="phone", required=True)
@@ -34,6 +35,8 @@ class vehicle(models.Model):
 	_description = "vehicle detail"
 
 	_rec_name = "license_plate"
+	
+	company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 	model_id = fields.Many2one(comodel_name='fleet.vehicle.car.model', string='Model',
         tracking=True, required=True, help='Model of the vehicle')
 	license_plate = fields.Char(name = "license plate")
