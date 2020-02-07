@@ -200,6 +200,7 @@
         <form>
           <sheet>
             <header>
+            <button string = "Draft" type="object" name="action_draft" states="confirm" class = "oe_highlight" />
 
             <button string = "Confirm" type="object" name="action_confirm" states="cancelled" class = "oe_highlight" />
 

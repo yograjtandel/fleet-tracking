@@ -128,8 +128,18 @@ class VehicleContract(models.Model):
 		booking_renew_env1 = self.env['fleet.contract.renew'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
 																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
 
-		vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
-		[vehicle_list.append(v_id) for v_id in booking_renew_env1.vehicle_id.ids]
+		vehicle_list = []
+		for contract in booking_env1:
+			if contract.state in ['confirm','running']:
+				print(contract.state)
+				[vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+
+
+		for contract in booking_renew_env1:
+			if contract.state in ['confirm','running']:
+				print(contract.state)
+				[vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+
 		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 
 
@@ -240,7 +250,7 @@ class ContractRenew(models.Model):
 	required_vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle",compute="_compute_available_vehicle", string='not Vehicle')
 	vehicle_id = fields.Many2many(comodel_name="fleet.vehicle",domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
 	instruction = fields.Text(name="Other Instruction")
-	state = fields.Selection(selection = [('confirm','Confirm'),('cancelled','Cancelled'),('running','Running'),('closed','Closed'),('renew','ReNew')],default = 'confirm')	
+	state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('cancelled','Cancelled'),('running','Running'),('closed','Closed'),('renew','ReNew')],default = 'draft')	
 	
 	@api.model
 	def create(self,vals):
@@ -256,19 +266,30 @@ class ContractRenew(models.Model):
 		else:
 			self.duration = 0
 
+
+self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 	@api.depends("start_date","end_date")
 	def _compute_available_vehicle(self):
-		if self.start_date and self.end_date:
-			print("-------++++++++")
-			vehicle_env = self.env['fleet.vehicle'].search([])
+		vehicle_env = self.env['fleet.vehicle'].search([])
 
 
-			booking_env1 = self.env['fleet.vehicle.contract.booking'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
-																		'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
-			
-												
-			vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
-			self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
+		booking_env1 = self.env['fleet.vehicle.contract.booking'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
+																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
+		
+		booking_renew_env1 = self.env['fleet.contract.renew'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
+																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
+		vehicle_list = []
+		for contract in booking_env1:
+			if contract.state in ['confirm','running']:
+				print(contract.state)
+				[vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+
+		for contract in booking_renew_env1:
+			if contract.state in ['confirm','running']:
+				print(contract.state)
+				[vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+						
+		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 
 	def action_renew_contract(self,**args):
 		return {
@@ -283,7 +304,10 @@ class ContractRenew(models.Model):
 					}
 		}
 
-	
+	def action_draft(self):
+		self.write({'state' : 'draft'})
+		return True
+
 	def action_confirm(self):
 		self.write({'state' : 'confirm'})
 		return True
