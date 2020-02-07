@@ -34,10 +34,23 @@
       </field>
     </record>
 
+
+
+    <record id=">fleet_cost_graph_view" model="ir.ui.view">
+       <field name="name">fleet.cost.graph</field>
+       <field name="model">fleet.cost</field>
+       <field name="arch" type="xml">
+           <graph string="Graph">
+               <field name="vehicle"/>
+               <field name="cost" type="measure"/>
+           </graph>
+       </field>
+    </record>
+
     <record model="ir.actions.act_window" id = "fleet_cost_action_window">
       <field name="name"> Services </field>
       <field name="res_model">fleet.cost</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,graph</field>
     </record>
 
     <menuitem name="Services" id="fleet_cost_menu_child" parent="fleet_tracking.vehicle_vehicle_menu_child" action="fleet_cost_action_window"/>
