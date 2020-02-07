@@ -272,6 +272,9 @@
 		<field name="image_128" type="base64" file="fleet_tracking/static/img/brand_suzuki-image.png"/>
 	  </record>
 
+
+
+
 	<record id="maintenance_type_1" model="fleet.maintenance.type">
 		<field name="name">Tire</field>
 	</record>
@@ -286,6 +289,116 @@
 	</record>
 	<record id="maintenance_type_5" model="fleet.maintenance.type">
 		<field name="name">Wash</field>
+	</record>
+
+
+
+
+	<record id="petrol" model="fleet.vehicle.fule.type">
+		<field name="name">Petrol</field>
+	</record>
+	<record id="diesel" model="fleet.vehicle.fule.type">
+		<field name="name">Diesel</field>
+	</record>
+	<record id="cng" model="fleet.vehicle.fule.type">
+		<field name="name">CNG</field>
+	</record>
+
+    <record id="andra_pradesh" model="fleet.state">
+		<field name="name">Andra Pradesh</field>
+	</record>
+    <record id="arunachal_pradesh" model="fleet.state">
+		<field name="name">Arunachal Pradesh</field>
+	</record>
+    <record id="assam" model="fleet.state">
+		<field name="name">Assam</field>
+	</record>
+    <record id="bihar" model="fleet.state">
+		<field name="name">Bihar</field>
+	</record>
+	<record id="goa" model="fleet.state">
+		<field name="name">Goa</field>
+	</record>
+	<record id="gujarat" model="fleet.state">
+		<field name="name">Gujarat</field>
+	</record>
+	<record id="haryana" model="fleet.state">
+		<field name="name">Haryana</field>
+	</record>
+	<record id="himachal_pradesh" model="fleet.state">
+		<field name="name">Himachal Pradesh</field>
+	</record>
+	<record id="jammu_and_kashmir" model="fleet.state">
+		<field name="name">Jammu and Kashmir</field>
+	</record>
+	<record id="jharkhand" model="fleet.state">
+		<field name="name">Jharkhand</field>
+	</record>
+	<record id="karnataka" model="fleet.state">
+		<field name="name">Karnataka</field>
+	</record>
+	<record id="kerala" model="fleet.state">
+		<field name="name">Kerala</field>
+	</record>
+	<record id="madya_pradesh" model="fleet.state">
+		<field name="name">Madya Pradesh</field>
+	</record>
+	<record id="maharashtra" model="fleet.state">
+		<field name="name">Maharashtra</field>
+	</record>
+	<record id="manipur" model="fleet.state">
+		<field name="name">Manipur</field>
+	</record>
+	<record id="meghalaya" model="fleet.state">
+		<field name="name">Meghalaya</field>
+	</record>
+	<record id="mizoram" model="fleet.state">
+		<field name="name">Mizoram</field>
+	</record>
+	<record id="nagaland" model="fleet.state">
+		<field name="name">Nagaland</field>
+	</record>
+	<record id="orissa" model="fleet.state">
+		<field name="name">Orissa</field>
+	</record>
+	<record id="punjab" model="fleet.state">
+		<field name="name">Punjab</field>
+	</record>
+	<record id="rajasthan" model="fleet.state">
+		<field name="name">Rajasthan</field>
+	</record>
+	<record id="sikkim" model="fleet.state">
+		<field name="name">Sikkim</field>
+	</record>
+	<record id="tamil_nadu" model="fleet.state">
+		<field name="name">Tamil Nadu</field>
+	</record>
+	<record id="telagana" model="fleet.state">
+		<field name="name">Telagana</field>
+	</record>
+	<record id="tripura" model="fleet.state">
+		<field name="name">Tripura</field>
+	</record>
+	<record id="uttaranchal" model="fleet.state">
+		<field name="name">Uttaranchal</field>
+	</record>
+	<record id="uttar_pradesh" model="fleet.state">
+		<field name="name">Uttar Pradesh</field>
+	</record>
+	<record id="west_bengal" model="fleet.state">
+		<field name="name">West Bengal</field>
+	</record>
+
+
+
+	<record id="cancle_reason1" model="fleet.cancelled.reason">
+		<field name="name">Change my mind</field>
+	</record>
+	<record id="cancle_reason2" model="fleet.cancelled.reason">
+		<field name="name">High cost</field>
+	</record>
+		<record id="cancle_reason3" model="fleet.cancelled.reason">
+		<field name="name">Other</field>
 	</record>
 
 </odoo>

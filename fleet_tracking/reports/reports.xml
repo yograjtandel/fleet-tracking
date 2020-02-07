@@ -47,16 +47,6 @@
                       <td> <b>Vehicle : </b> </td><td><span t-field="o.vehicle_id"/></td>
                     </tr>
                   </table>
-      <!--               <p></p>
-                    <p></p>
-                    <p> End Date <span t-field="o.start_date"/></p>
-                    <p> Duration <span t-field="o.end_date"/></p>
-                    <p> No of Traveller <span t-field="o.no_of_person_on_trip"/></p>
-                    <p> Pickup Address <span t-field="o.pickup_address"/></p>
-                    <p> Destination <span t-field="o.destination_discription"/></p>
-                    <p> Instruction <span t-field="o.instruction"/></p>
-                    <p> Driver <span t-field="o.driver_id"/></p>
-                    <p> Vehicle <span t-field="o.vehicle_id"/></p> -->
                 </div>
             </t>
         </t>

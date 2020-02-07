@@ -25,8 +25,8 @@
         'views/fleet_odometer_view.xml',
         'views/fleet_odometer_templet.xml',
         'views/fleet_dashboard_view.xml',
-        'views/registration.xml',
-        'views/homepage_view.xml'
+        'views/registration_template.xml',
+        'views/homepage_template.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

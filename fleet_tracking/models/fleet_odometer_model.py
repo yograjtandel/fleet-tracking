@@ -13,23 +13,3 @@ class odometer(models.Model):
 	driver_id = fields.Many2one(comodel_name="fleet.driver",ondelete="restrict", string="Driver")
 	odometer_reading = fields.Float('Odometer')
 	reading_unit = fields.Char('unit' , default="Km")
-
-	@api.model
-	def create(self, vals):
-		print("\n\n\n\n\n\n")
-		print("########################################3",vals)
-		
-		return super(odometer, self).create(vals)
-
-	def write(self, vals):
-		# print("####################",self.env['fleet.odometer'].search([('odometer_reading', '=', "223.00")]))
-		print("####################",self.env['fleet.odometer'].browse([3])._context)
-		return super(odometer, self).write(vals)
-
-	def unlink(self):
-		print("-----------------------")
-		super(odometer,self).unlink()
-
-	def copy(self,default=None):
-		print("$$$$$$$$$$$$$$$$$$$$$$444")
-		return super(odometer,self).copy(default)

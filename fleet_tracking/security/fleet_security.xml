@@ -5,50 +5,20 @@
   		<field name="description">User access for fleet tracking</field>
   		<field name="sequence">4</field>
 	</record>
-    <record id="group_user" model="res.groups">
-        <field name="name">User</field>
+
+    <record id="group_sales_person" model="res.groups">
+        <field name="name">Sales Person</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="category_id" ref="fleet_tracking.module_fleet_security"/>
     </record>
-
+    <record id="group_driver" model="res.groups">
+      <field name="name">Driver</field>
+      <field name="implied_ids" eval="[(4,ref('base.group_user'))]"/>
+      <field name="category_id" ref="fleet_tracking.module_fleet_security"/>
+    </record>
     <record id="group_manager" model="res.groups">
         <field name="name">Manager</field>
-        <field name="implied_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         <field name="category_id" ref="fleet_tracking.module_fleet_security"/>
-    </record>
-
-    
-<!--     <record id="fleet_rule1" model="ir.rule">
-       <field name="name"> Manager </field>
-       <field name="model_id" ref="model_ahm_animal_registration"/>
-       <field name="groups" eval="[(4, ref('AHM.group_manager'))]"/>
-       <field name="perm_read" eval="1"/>
-       <field name="perm_write" eval="1"/>
-       <field name="perm_create" eval="1"/>
-       <field name="perm_unlink" eval="1"/>
-       <field name="domain_force">[('create_uid', '=', user.id)]</field>
-   </record> -->
-<!--     <record model="ir.rule" id="record_restricted_company_rule">
-       <field name="name">Restricted Record: multi-company</field>
-       <field name="model_id" ref="model_fleet_vehicle_contract_booking"/>
-       <field name="global" eval="True"/>
-       <field name="domain_force">
-           [('company_id', 'in', company_ids)]
-       </field>
-       <field name="domain_force">
-           [('create_uid', '=', user.id)]
-       </field>
-       <field name="groups" eval="[(4, ref('fleet_tracking.group_manager'))]"/>
-    </record> -->
-
-    <record id="contract_states_access" model="ir.rule">
-        <field name="name">Only confirmed sessions can be seen by user</field>
-        <field name="model_id" ref="model_fleet_vehicle_contract_booking"/>
-        <field name="groups" eval="[(4, ref('fleet_tracking.group_user'))]"/>
-        <field name="perm_read" eval="1"/>
-        <field name="perm_write" eval="0"/>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
-        <field name="domain_force">[('state', '=','confirm')]</field>
     </record>
 </odoo>

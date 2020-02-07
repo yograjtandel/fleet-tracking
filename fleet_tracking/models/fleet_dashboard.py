@@ -14,10 +14,10 @@ class FleetDashboard(models.Model):
 
 	@api.depends("name")
 	def _kanban_dashboard_graph(self):
-		print("ssssssssssssssssssssssssssss")
+		# print("ssssssssssssssssssssssssssss")
 		for journal in self:
 			journal.kanban_dashboard_graph = json.dumps(journal.get_bar_graph_datas())
-			print("###########",journal.kanban_dashboard_graph)
+			# print("###########",journal.kanban_dashboard_graph)
 
 		
 
@@ -28,12 +28,12 @@ class FleetDashboard(models.Model):
 
 		list_of_date=[date.start_date.strftime("%m") for date in contract_env]
 		data_values = Counter(list_of_date)
-		print("___________________________",data_values)
+		# print("___________________________",data_values)
 		for key in data_values:
 			print("key",key)
 			data.append({'label':key, 'value':data_values[key], 'type': 'past'})
 
-		print("+++++++++++++++++++++++++++",data)
+		# print("+++++++++++++++++++++++++++",data)
 		return [{'values': data, 'title': "Monthly Contract", 'key': "graph_key", 'is_sample_data': True}]
 	
 	

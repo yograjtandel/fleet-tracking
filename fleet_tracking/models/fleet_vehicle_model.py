@@ -9,11 +9,11 @@ class  driver(models.Model):
 	company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 	name = fields.Char(name = "Driver Name", required=True , string="Driver Name")
 	driving_licence_nunmber = fields.Char(name="Driving licence number", required=True)
-	phone = fields.Integer(name="phone", required=True)
-	email = fields.Char(name="Email")
+	phone = fields.Char(name="phone", required=True)
+	email = fields.Char(name="Email" ,required=True)
 	address = fields.Text(name="Address")
 	image = fields.Image('Image', max_width=90, max_height=90, widget="image")
-	birth_date = fields.Date('Birth Date' ,default=fields.Date.today)
+	birth_date = fields.Date('Birth Date' ,default=fields.Date.today, required=True)
 	
 	@api.constrains('birth_date')
 	def _check_age(self):		
@@ -21,6 +21,22 @@ class  driver(models.Model):
 			date = fields.Date.context_today(record)
 			if (date.year - record.birth_date.year) < 18:
 				raise ValidationError("your age is < 18, you are not eligible for driving")
+
+	@api.model
+	def create(self,vals):
+		groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+		
+		partner = self.env['res.partner'].create({ 
+			'name': vals.get('name'), 
+			'email': vals.get('email')})
+		
+		self.env['res.users'].create({ 
+			'partner_id': partner.id, 
+			'login': vals.get('name'), 
+			'password': "1234",
+			'groups_id': groups_id_name })
+
+		return super(driver, self).create(vals)
 
 
 class FuleType(models.Model):
@@ -50,8 +66,6 @@ class vehicle(models.Model):
 	image_128 = fields.Image(related='model_id.image_128', readonly=False, store=True)
 
 	def name_get(self):
-		# if self.id == None:
-		# 	return []
 		name=[]
 		for vehicle in self:
 			name.append((vehicle.id,str(vehicle.model_id.brand_id.name)+"-"+str(vehicle.model_id.name)+"/"+str(vehicle.license_plate)+"-"+str(vehicle.color)))

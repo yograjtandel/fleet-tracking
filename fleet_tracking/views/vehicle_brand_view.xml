@@ -2,7 +2,6 @@
 
 <odoo>
   <data>
-    <!-- explicit list view definition -->
     <record model='ir.ui.view' id = 'vehicle_car_model_list_view'>
       <field name= "name">fleet.vehicle.car.model.tree</field>
       <field name="model">fleet.vehicle.car.model</field>

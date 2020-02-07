@@ -5,21 +5,53 @@ from odoo.exceptions import ValidationError
 import json
 import datetime
 from collections import Counter
-class customer(models.Model):
+import passlib
+from passlib.context import CryptContext
+
+class Customer(models.Model):
 	_name = "fleet.customer"
 	_description = "customer detail"
 
 	name = fields.Char(name="Name")
 	email = fields.Char(name="Email")
-	mobile = fields.Integer(name="Mobile")
+	mobile = fields.Char(name="Mobile")
 	street1 = fields.Char(name="Street1")
 	street2 = fields.Char(name="Street2")
 	city =fields.Char(name="City")
 	state=fields.Many2one(comodel_name="fleet.state", string="State")
 	pincode=fields.Char(name="Pincode")
-	notes=fields.Text(name="Notes")
+	country=fields.Char(name="Notes")
 	trip_id=fields.Many2one(comodel_name="fleet.vehicle.contract.trip")
+	password = fields.Char(name="password")
+	enc_pass=fields.Char(name="pass",compute="_encrypt_password")
 
+
+	@api.model
+	def create(self,vals):
+		groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+		
+		partner = self.env['res.partner'].create({ 
+			'name': vals.get('name'), 
+			'email': vals.get('email')})
+		
+		self.env['res.users'].create({ 
+			'partner_id': partner.id, 
+			'login': vals.get('name'), 
+			'password': vals.get('password'),
+			'groups_id': groups_id_name })
+
+		return super(Customer, self).create(vals)
+
+
+	@api.depends("password")
+	def _encrypt_password(self):
+		if self.password:
+			pwd_context = CryptContext(
+				schemes=["pbkdf2_sha256"],
+				default="pbkdf2_sha256",
+				pbkdf2_sha256__default_rounds=30000
+			)
+			self.enc_pass=pwd_context.encrypt(self.password)
 
 		
 class VehicleContract(models.Model):
@@ -47,8 +79,9 @@ class VehicleContract(models.Model):
 	renew_visible=fields.Boolean(string="visible",compute="_compute_visible")
 	renew_detail=fields.One2many(comodel_name="fleet.contract.renew", inverse_name ='contract_id', string="ReNew", stored=False)
 
-	@api.depends("start_date","end_date")
 
+
+	@api.depends("start_date","end_date")
 	def _compute_duration(self):
 		for record in self:
 			record.duration = (record.end_date - record.start_date).days + 1
@@ -79,30 +112,10 @@ class VehicleContract(models.Model):
 
 
 	def _compute_visible(self):
-		# booking_env1 = self.env['fleet.vehicle.contract.booking'].search([])
-		
-		
 		if self.id:
-			print("++++++++++++",self.id)
 			self.renew_visible=True
 		else:
 			self.renew_visible=False
-	# @api.onchange("start_date","end_date")
-	# def _onchange_dates(self):
-	# 	booking_env = self.env['fleet.vehicle.contract.booking'].search([])
-	# 	vehicle_env = self.env['fleet.vehicle'].search([])
-	# 	booking_e = self.env['fleet.vehicle.contract.booking'].search(['|',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
-	# 																('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
-	# 	# d_list=[]
-	# 	# for dt in booking_e:
-	# 	# 	d_list.append(dt.start_date)
-	# 	# print(d_list)	
-	# 	# print("++++++++++++",booking_e)
-	# 	# booking_env1=self.env['fleet.vehicle.contract.booking'].search([('end_date','<',min(booking_e.start_date))])
-	# 	vehicle_list= [v_id for v_id in booking_e.vehicle_id.ids]
-	# 	# print("$$$$$$$$$$$$",self.mapped(self.vehicle_id))
-	# 	# print("!!!!!!!!!!!!!!!!!",vehicle_list)
-	# 	return {'domain': {'vehicle_id': [('id', 'not in',vehicle_list)]}}
 
 	@api.depends("start_date","end_date")
 	def _compute_available_vehicle(self):
@@ -112,8 +125,11 @@ class VehicleContract(models.Model):
 		booking_env1 = self.env['fleet.vehicle.contract.booking'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
 																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
 		
-											
+		booking_renew_env1 = self.env['fleet.contract.renew'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
+																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
+
 		vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
+		[vehicle_list.append(v_id) for v_id in booking_renew_env1.vehicle_id.ids]
 		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 
 
@@ -133,25 +149,6 @@ class VehicleContract(models.Model):
 
 
 
-	# def action_renew(self,**kwargs):
-	# 	print(self)
-	# 	print(kwargs)
-	# 	self.env["fleet.vehicle.contract.booking"].browse([kwargs['contract_id']]).write({'state' : 'renew'})
-	# 	return True
-
-	'''this method is for open model view in modal'''
-
-	# def action_set_cancelled_reason(self,**args):
-	# 	# print("############2222222222222222")
-	# 	return {
-	# 		'type': 'ir.actions.act_window',
-	# 		'name': 'cancle contract',
-	# 		'view_mode': 'form',
-	# 		'res_model': 'fleet.cancelled.reason.contract.rel',
-	# 		'target': 'new',
-	# 		'context': {'default_contract_id': self.id}
-	# 	}
-
 	def action_renew_contract(self,**args):
 		return {
 			'type': 'ir.actions.act_window',
@@ -161,7 +158,6 @@ class VehicleContract(models.Model):
 			'target': 'new',
 			'context': {'default_contract_id': self.id,
 					'default_instruction':self.instruction,
-					'default_vehicle_id':self.vehicle_id.ids
 					}
 		}
 
@@ -238,13 +234,14 @@ class ContractRenew(models.Model):
 
 	contract_id=fields.Many2one(comodel_name="fleet.vehicle.contract.booking",string="Contract Id")
 	renew_date=fields.Date('Renew Date',default=fields.Date.today)
-	start_date=fields.Date('Start Date', required=True ,default=fields.Date.today)
-	end_date=fields.Date('End Date', required=True ,default=fields.Date.today)
+	start_date=fields.Date('Start Date', required=True,default=fields.Date.today )
+	end_date=fields.Date('End Date', required=True,default=fields.Date.today )
 	duration = fields.Char('Duration', compute="_compute_duration")
 	required_vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle",compute="_compute_available_vehicle", string='not Vehicle')
 	vehicle_id = fields.Many2many(comodel_name="fleet.vehicle",domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
 	instruction = fields.Text(name="Other Instruction")
 	state = fields.Selection(selection = [('confirm','Confirm'),('cancelled','Cancelled'),('running','Running'),('closed','Closed'),('renew','ReNew')],default = 'confirm')	
+	
 	@api.model
 	def create(self,vals):
 		self.env["fleet.vehicle.contract.booking"].browse([vals['contract_id']]).write({'state' : 'renew'})
@@ -253,21 +250,25 @@ class ContractRenew(models.Model):
 
 	@api.depends("start_date","end_date")
 	def _compute_duration(self):
-		for record in self:
-			record.duration = (record.end_date - record.start_date).days + 1
+		if self.start_date and self.end_date:
+			for record in self:
+				record.duration = (record.end_date - record.start_date).days + 1
+		else:
+			self.duration = 0
 
 	@api.depends("start_date","end_date")
 	def _compute_available_vehicle(self):
-		# booking_env = self.env['fleet.vehicle.contract.booking'].search([])
-		vehicle_env = self.env['fleet.vehicle'].search([])
+		if self.start_date and self.end_date:
+			print("-------++++++++")
+			vehicle_env = self.env['fleet.vehicle'].search([])
 
 
-		booking_env1 = self.env['fleet.vehicle.contract.booking'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
-																	'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
-		
-											
-		vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
-		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
+			booking_env1 = self.env['fleet.vehicle.contract.booking'].search(['&',('state','!=','cancelled'),'|','&',('start_date','<=',self.start_date),('end_date','>=',self.start_date),
+																		'&',('start_date','<=',self.end_date),('end_date','>=',self.end_date)])
+			
+												
+			vehicle_list= [v_id for v_id in booking_env1.vehicle_id.ids]
+			self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 
 	def action_renew_contract(self,**args):
 		return {
@@ -291,16 +292,3 @@ class ContractRenew(models.Model):
 		self.write({'state' : 'running'})
 		return True
 
-		
-# class ContractRenew(models.Model):
-# 	_name="fleet.contract.renew"
-# 	_inherit="fleet.vehicle.contract.booking"
-# 	_description="detail of renew contract"
-
-# 	contract_id=fields.Many2one(comodel_name="fleet.vehicle.contract.booking",string="Contract Id")
-# 	renew_date=fields.Date('Renew Date',default=fields.Date.today)
-# 	@api.model
-# 	def create(self,vals):
-# 		print(vals['contract_id'])
-# 		super().action_renew(contract_id=vals['contract_id'])
-# 		return super(ContractRenew, self).create(vals)
