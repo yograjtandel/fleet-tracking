@@ -91,6 +91,7 @@ class UserRegister(http.Controller):
 
 			request.env['fleet.customer'].sudo().create({
 				'name': post.get('username'), 
-				'email': post.get('email')
+				'email': post.get('email'),
+				'password': post.get('password'),
 				})
 		return http.local_redirect('/web/login?redirect=/homepage') 

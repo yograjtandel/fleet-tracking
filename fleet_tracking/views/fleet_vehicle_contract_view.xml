@@ -24,7 +24,6 @@
         <form>
           <sheet>
             <group>
-              <field name="enc_pass"/>
               <field name="password"/>              
               <field name="name"/>
               <field name="email"/>
@@ -43,6 +42,12 @@
           </sheet>
         </form>
       </field>
+    </record>
+
+    <record model="ir.actions.act_window" id = "fleet_customer_action_window">
+      <field name="name"> Contract </field>
+      <field name="res_model">fleet.customer</field>
+      <field name="view_mode">tree,form</field>
     </record>
 
 
@@ -198,11 +203,11 @@
       <field name="model">fleet.contract.renew</field>
       <field name="arch" type="xml">
         <form>
-          <sheet>
+          
             <header>
             <button string = "Draft" type="object" name="action_draft" states="confirm" class = "oe_highlight" />
 
-            <button string = "Confirm" type="object" name="action_confirm" states="cancelled" class = "oe_highlight" />
+            <button string = "Confirm" type="object" name="action_confirm" states="cancelled,draft" class = "oe_highlight" />
 
             <button name="%(fleet_tracking.fleet_cancelled_contract_action)d" context="{'state':state}" string="Cancelled" type="action" class="oe_highlight" states="confirm"/>
             
@@ -213,6 +218,15 @@
             <button string = "ReNew" type="object" name="action_renew_contract" states="closed" class = "oe_highlight" />
             <field name="state" widget="statusbar" status_visible="confirm,cancelled,running,closed,renew"/>
           </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="open_trip"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text">
+                            <field name="count_trips" widget="statinfo" string="Trip"/>
+              </button>
+            </div>
             <group>
               <field name="contract_id"/>
               <field name="renew_date" readonly="1"/>
@@ -260,6 +274,7 @@
             <group>
               <field name="date" readonly="1"/>
               <field name="contract_id" readonly="1"/>
+              <field name="renew_id" />
               <field name="driver_id"/>
               <field name="distance_travelled"/>
               <field name="no_of_person_in_trip"/>
@@ -309,7 +324,9 @@
 
     <menuitem name="Contracts" id="fleet_vehicle_contract_booking_menu_child" parent="fleet_vehicle_contract_booking_menu" action="fleet_vehicle_contract_booking_action_window"/>
 
-    <menuitem name="Trip" id="fleet_vehicle_contract_trip_menu_child" parent="fleet_vehicle_contract_booking_menu" action="fleet_vehicle_contract_trip_action_window"/>
+<!--     <menuitem name="Trip" id="fleet_vehicle_contract_trip_menu_child" parent="fleet_vehicle_contract_booking_menu" action="fleet_vehicle_contract_trip_action_window"/> -->
+
+    <menuitem name="Customer" id="fleet_customer_menu_child" parent="fleet_vehicle_contract_booking_menu" action="fleet_customer_action_window"/>
 
   </data>
 </odoo>

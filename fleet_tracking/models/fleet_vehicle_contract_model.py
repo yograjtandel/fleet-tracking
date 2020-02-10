@@ -23,36 +23,32 @@ class Customer(models.Model):
 	country=fields.Char(name="Notes")
 	trip_id=fields.Many2one(comodel_name="fleet.vehicle.contract.trip")
 	password = fields.Char(name="password")
-	enc_pass=fields.Char(name="pass",compute="_encrypt_password")
 
 
 	@api.model
 	def create(self,vals):
-		groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+		if not self.env['res.users'].search([('login','=',vals.get('name'))]):
+			groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+			
+			partner = self.env['res.partner'].create({ 
+				'name': vals.get('name'), 
+				'email': vals.get('email')})
+			
+			self.env['res.users'].create({ 
+				'partner_id': partner.id, 
+				'login': vals.get('name'), 
+				'password': vals.get('password'),
+				'groups_id': groups_id_name })
 		
-		partner = self.env['res.partner'].create({ 
-			'name': vals.get('name'), 
-			'email': vals.get('email')})
-		
-		self.env['res.users'].create({ 
-			'partner_id': partner.id, 
-			'login': vals.get('name'), 
-			'password': vals.get('password'),
-			'groups_id': groups_id_name })
+		pwd_context = CryptContext(
+			schemes=["pbkdf2_sha256"],
+			default="pbkdf2_sha256",
+			pbkdf2_sha256__default_rounds=30000
+		)
+		print(vals['password'])
+		vals['password']=pwd_context.encrypt(vals['password'])
 
 		return super(Customer, self).create(vals)
-
-
-	@api.depends("password")
-	def _encrypt_password(self):
-		if self.password:
-			pwd_context = CryptContext(
-				schemes=["pbkdf2_sha256"],
-				default="pbkdf2_sha256",
-				pbkdf2_sha256__default_rounds=30000
-			)
-			self.enc_pass=pwd_context.encrypt(self.password)
-
 		
 class VehicleContract(models.Model):
 	_name = "fleet.vehicle.contract.booking"
@@ -210,7 +206,7 @@ class ContractTrip(models.Model):
 	distance_travelled = fields.Float(name="Distance")
 	no_of_person_in_trip=fields.Integer(name="No of Person")
 	address = fields.One2many(comodel_name='fleet.vehicle.contract.trip.address' , inverse_name ='trip_id', string="Address")
-
+	renew_id=fields.Many2one(comodel_name='fleet.contract.renew' , string="Renew ID")
 
 class State(models.Model):
 	_name="fleet.state"
@@ -251,6 +247,7 @@ class ContractRenew(models.Model):
 	vehicle_id = fields.Many2many(comodel_name="fleet.vehicle",domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
 	instruction = fields.Text(name="Other Instruction")
 	state = fields.Selection(selection = [('draft','Draft'),('confirm','Confirm'),('cancelled','Cancelled'),('running','Running'),('closed','Closed'),('renew','ReNew')],default = 'draft')	
+	count_trips = fields.Integer(compute="_count_trips")
 	
 	@api.model
 	def create(self,vals):
@@ -267,7 +264,6 @@ class ContractRenew(models.Model):
 			self.duration = 0
 
 
-self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
 	@api.depends("start_date","end_date")
 	def _compute_available_vehicle(self):
 		vehicle_env = self.env['fleet.vehicle'].search([])
@@ -290,6 +286,32 @@ self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehi
 				[vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
 						
 		self.required_vehicle_ids=self.env['fleet.vehicle'].search([('id', 'not in',vehicle_list)])
+
+	
+
+	def open_trip(self):
+		if self.count_trips > 0:
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Assignation Logs',
+				'view_mode': 'tree',
+				'res_model': 'fleet.vehicle.contract.trip',
+				'domain': [('contract_id', '=', self.id)],
+			}
+		else:
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'New Trip',
+				'view_mode': 'form',
+				'res_model': 'fleet.vehicle.contract.trip',
+				'context': {'default_contract_id': self.contract_id.id,
+							'default_renew_id':self.id}
+			}
+
+	def _count_trips(self):
+		trip_env = self.env['fleet.vehicle.contract.trip']
+		for record in self:
+			record.count_trips = trip_env.search_count([('contract_id', '=', record.contract_id.id),('renew_id','=',record.id)])
 
 	def action_renew_contract(self,**args):
 		return {

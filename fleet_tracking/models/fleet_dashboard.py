@@ -11,7 +11,9 @@ class FleetDashboard(models.Model):
 
 	name=fields.Boolean(name="Name", default=True)
 	kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
-
+	partner_id = fields.Many2one('res.partner', string='Customer', tracking=10, index=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", help="Linked partner (optional). Usually created when converting the lead. You can find a partner by its Name, TIN, Email or Internal Reference.")
+    
 	@api.depends("name")
 	def _kanban_dashboard_graph(self):
 		# print("ssssssssssssssssssssssssssss")
