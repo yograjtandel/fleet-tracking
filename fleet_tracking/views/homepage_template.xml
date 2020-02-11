@@ -26,7 +26,7 @@
 	        <a class="nav-link" href="/odometer/">Odometer</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link disabled" href="#">Map</a>
+	        <a class="nav-link" href="/map/">Map</a>
 	      </li>
 	    </ul>
 	  </div>
@@ -133,11 +133,10 @@
 <template id="contract_booking">
 	<t t-call="portal.frontend_layout">
 		<div class="container">
-			<center><h1>Fleet Tracking</h1></center> 
 		 	<t t-call="fleet_tracking.fleet_portal_menu"/>
-		    <form>
+		    <form action="#">
 	            <div class="col-lg-8 form_cente">
-	                <div class="form-group">
+<!-- 	                <div class="form-group">
 	                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Customer</label>
 	                    <select class="form-control">
 						  <option>Default select</option>
@@ -166,11 +165,14 @@
 	                    <select class="form-control">
 						  <option>Default select</option>
 						</select>
-					</div>
+					</div> -->
 						
-						<div class="col-xl-6">
-	             			<button type="submit" class="btn btn-primary" style="margin-top: 5%;">Submit</button>
+						<div class="col-xl-6 mybutton">
+	             			<button type="submit" class="btn btn-primary mysubmit" style="margin-top: 5%;">Submit</button>
 						</div>
+
+						<p id = "status"></p>
+<a id = "map-link" target="_blank"></a>
 					</div>
 				
 		    </form>

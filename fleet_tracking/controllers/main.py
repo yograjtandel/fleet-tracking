@@ -46,7 +46,7 @@ class UserRegister(http.Controller):
 			'reading_unit' : post.get('unit')})
 		return request.redirect('/odometer/')
 		
-	@http.route('/booking/',method="post", auth="public", type="http", csrf=False)
+	@http.route('/map/',method="post", auth="public", type="http", csrf=False)
 	def booking(self, **post):
 		return request.render('fleet_tracking.contract_booking')
 		
@@ -55,7 +55,7 @@ class UserRegister(http.Controller):
 	@http.route('/registration/<string:user>',method="post" ,auth="public", type="http", csrf=False) 
 	def service_provider_index1(self,user=None, **post):
 		if user == 'company': 
-			groups_id_name = [(6, 0, [request.env.ref('fleet_tracking.group_manager').id]),(6, 0, [request.env.ref('base.group_user').id])] 
+			groups_id_name = [(6, 0, [request.env.ref('fleet_tracking.group_manager').id])] 
 			currency_name = post.get('currency') 
 			currency = request.env['res.currency'].sudo().search([('name', '=', currency_name)], limit=1) 
 			

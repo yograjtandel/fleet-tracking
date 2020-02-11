@@ -2,6 +2,13 @@
 
 <odoo>
   <data>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/fleet_tracking/static/src/js/init.js"/>
+            <script type="text/javascript" src="/fleet_tracking/static/src/js/map_widget.js"/>
+            <script type="text/javascript" src="/fleet_tracking/static/src/js/place_autocomplete.js"/>
+        </xpath>
+    </template>
 
     <record model='ir.ui.view' id = 'fleet_customer_list_view'>
       <field name= "name">fleet.customer.tree</field>
@@ -43,11 +50,23 @@
         </form>
       </field>
     </record>
+    <record id="fleet_customer_view_map" model="ir.ui.view">
+        <field name="name">fleet.customer.view.map</field>
+        <field name="model">fleet.customer</field>
+        <field name="arch" type="xml">
+            <map res_partner="partner_id">
+                <marker-popup>
+                    <field name="name" string="Title "/>
+                    <field name="partner_id" string="Customer "/>
+                </marker-popup>
+            </map>
+        </field>
+    </record>
 
     <record model="ir.actions.act_window" id = "fleet_customer_action_window">
-      <field name="name"> Contract </field>
+      <field name="name"> Customer </field>
       <field name="res_model">fleet.customer</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,map</field>
     </record>
 
 
@@ -181,15 +200,18 @@
     </record>
 
 
-    <record model = "ir.ui.view" id = "fleet_vehicle_contract_booking_dashboard_view">
+    <record model="ir.ui.view" id="fleet_vehicle_contract_booking_dashboard_view">
       <field name="name">fleet.vehicle.contract.booking.dashboard</field>
       <field name="model">fleet.vehicle.contract.booking</field>
       <field name="arch" type="xml">
-        <dashboard>
-            <view type="calendar" ref="fleet_tracking.fleet_vehicle_contract_booking_calendar_view"/>
-        </dashboard>
+          <dashboard>
+              <view type="calendar" ref="fleet_tracking.fleet_vehicle_contract_booking_calendar_view"/>
+          </dashboard>
       </field>
     </record>
+
+
+
 
 
     <record model="ir.actions.act_window" id = "fleet_vehicle_contract_booking_action_window">
@@ -299,15 +321,15 @@
         <form>
           <sheet>
             <group>
-              <label for="street" string="Address"/>
-              <div class="o_address_format">
-                  <field name="street1" placeholder="Street..." class="o_address_street"/>
-                  <field name="street2" placeholder="Street 2..." class="o_address_street"/>
-                  <field name="city" placeholder="City" class="o_address_city"/>
+              <!-- <label for="street" string="Address"/> -->
+              <!-- <div class="o_address_format"> -->
+                  <field name="street1" widget="place_autocomplete" placeholder="Street..."/>
+                  <field name="street2" placeholder="Street 2..."/>
+       <!--            <field name="city" placeholder="City" class="o_address_city"/>
                   <field name="state" class="o_address_state" placeholder="State" />
                   <field name="pincode" placeholder="ZIP" class="o_address_zip"/>
-                  <field name="notes" placeholder="Country" class="o_address_country" />
-              </div>
+                  <field name="notes" placeholder="Country" class="o_address_country" /> -->
+              <!-- </div> -->
             </group>
           </sheet>
         </form>

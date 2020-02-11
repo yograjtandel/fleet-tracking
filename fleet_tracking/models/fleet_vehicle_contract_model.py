@@ -23,6 +23,7 @@ class Customer(models.Model):
 	country=fields.Char(name="Notes")
 	trip_id=fields.Many2one(comodel_name="fleet.vehicle.contract.trip")
 	password = fields.Char(name="password")
+	partner_id = fields.Many2one('res.partner', string='Customer', tracking=10, index=True)
 
 
 	@api.model
@@ -76,6 +77,14 @@ class VehicleContract(models.Model):
 	renew_detail=fields.One2many(comodel_name="fleet.contract.renew", inverse_name ='contract_id', string="ReNew", stored=False)
 
 
+
+
+	# @api.model
+	# def create(self,vals):
+		# print(self.vehicle_id)
+		# booking_env = self.env["fleet.vehicle.contract.booking"].search(['vehicle_id','in',list(self.vehicle_id.ids)])
+		# print(booking_env)
+		# return super(VehicleContract, self).create(vals)
 
 	@api.depends("start_date","end_date")
 	def _compute_duration(self):
@@ -207,6 +216,7 @@ class ContractTrip(models.Model):
 	no_of_person_in_trip=fields.Integer(name="No of Person")
 	address = fields.One2many(comodel_name='fleet.vehicle.contract.trip.address' , inverse_name ='trip_id', string="Address")
 	renew_id=fields.Many2one(comodel_name='fleet.contract.renew' , string="Renew ID")
+
 
 class State(models.Model):
 	_name="fleet.state"
