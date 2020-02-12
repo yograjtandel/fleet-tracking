@@ -2,13 +2,6 @@
 
 <odoo>
   <data>
-    <template id="assets_backend" inherit_id="web.assets_backend">
-        <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/fleet_tracking/static/src/js/init.js"/>
-            <script type="text/javascript" src="/fleet_tracking/static/src/js/map_widget.js"/>
-            <script type="text/javascript" src="/fleet_tracking/static/src/js/place_autocomplete.js"/>
-        </xpath>
-    </template>
 
     <record model='ir.ui.view' id = 'fleet_customer_list_view'>
       <field name= "name">fleet.customer.tree</field>
@@ -296,7 +289,7 @@
             <group>
               <field name="date" readonly="1"/>
               <field name="contract_id" readonly="1"/>
-              <field name="renew_id" />
+              <field name="renew_id" attrs="{'invisible': [('renew_id', '=', False)]}"/>
               <field name="driver_id"/>
               <field name="distance_travelled"/>
               <field name="no_of_person_in_trip"/>
@@ -321,15 +314,15 @@
         <form>
           <sheet>
             <group>
-              <!-- <label for="street" string="Address"/> -->
-              <!-- <div class="o_address_format"> -->
-                  <field name="street1" widget="place_autocomplete" placeholder="Street..."/>
+              <label for="street" string="Address"/>
+              <div class="o_address_format">
+                  <field name="street1" placeholder="Street..."/>
                   <field name="street2" placeholder="Street 2..."/>
-       <!--            <field name="city" placeholder="City" class="o_address_city"/>
+                  <field name="city" placeholder="City" class="o_address_city"/>
                   <field name="state" class="o_address_state" placeholder="State" />
                   <field name="pincode" placeholder="ZIP" class="o_address_zip"/>
-                  <field name="notes" placeholder="Country" class="o_address_country" /> -->
-              <!-- </div> -->
+                  <field name="notes" placeholder="Note" class="o_address_country" />
+              </div>
             </group>
           </sheet>
         </form>
