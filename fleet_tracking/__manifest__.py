@@ -18,9 +18,9 @@
              'views/fleet_vehicle_contract_view.xml',
              'views/fleet_cost_view.xml',
              'views/fleet_odometer_view.xml',
-             'views/fleet_odometer_templet.xml',
              'views/fleet_dashboard_view.xml',
              'views/registration_template.xml',
+             'views/res_config_settings_views.xml',
              'views/homepage_template.xml'],
 
     'demo': [

@@ -26,7 +26,7 @@ class driver(models.Model):
 
     @api.model
     def create(self, vals):
-        groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+        groups_id_name = [(6, 0, [self.env.ref('fleet_tracking.group_driver').id])]
 
         partner = self.env['res.partner'].create({
                            'name': vals.get('name'),

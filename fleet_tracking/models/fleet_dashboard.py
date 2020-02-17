@@ -19,7 +19,7 @@ class FleetDashboard(models.Model):
 
     def get_bar_graph_datas(self):
         data = []
-        data.append({'label': _('month'), 'value': 0.0, 'type': 'past'})
+        # data.append({'label': _('month'), 'value': 0.0, 'type': 'past'})
         contract_env = self.env['fleet.vehicle.contract.booking'].search([])
 
         list_of_date = [date.start_date.strftime("%m") for date in contract_env]

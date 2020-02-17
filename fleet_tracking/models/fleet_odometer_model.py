@@ -12,4 +12,4 @@ class odometer(models.Model):
     date = fields.Date('Date', required=True, default=fields.Date.today)
     driver_id = fields.Many2one(comodel_name="fleet.driver", ondelete="restrict", string="Driver")
     odometer_reading = fields.Float('Odometer')
-    reading_unit = fields.Char('unit', default="Km")
+    reading_unit = fields.Char('Unit', default="Km")

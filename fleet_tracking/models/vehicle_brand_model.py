@@ -6,6 +6,7 @@ from odoo import models, fields, api
 
 class CarModel(models.Model):
     _name = "fleet.vehicle.car.model"
+    _table = 'fleet_vehicle_custom_table'
     _description = "vehicle models detail"
 
     name = fields.Char(name="Model", required=True, help="Ex. Mustang SVT Cobra R.", string="Model Name")
@@ -24,26 +25,10 @@ class VehicleBrand(models.Model):
     _description = "brand detail of the vehicle"
 
     name = fields.Char(name="Name", required=True)
+    active = fields.Boolean(default=True)
     image_128 = fields.Image('image_128', max_width=128, max_height=128)
+    # my_sys_variable = fields.Char(config_parameter="fleet.yog_sys_param")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
+    @api.model
+    def abc(self, **args):
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!1")

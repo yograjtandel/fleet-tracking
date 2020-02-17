@@ -27,7 +27,7 @@ class Customer(models.Model):
     @api.model
     def create(self, vals):
         if not self.env['res.users'].search([('login', '=', vals.get('name'))]):
-            groups_id_name = [(6, 0, [self.env.ref('base.group_portal').id])]
+            groups_id_name = [(6, 0, [self.env.ref('fleet_tracking.group_customer').id])]
             partner = self.env['res.partner'].create({
                             'name': vals.get('name'),
                             'email': vals.get('email')})
@@ -51,26 +51,25 @@ class Customer(models.Model):
 class VehicleContract(models.Model):
     _name = "fleet.vehicle.contract.booking"
     _description = "service tpye of the vehicle"
-    _rec_name = "customer"
+    _rec_name = "customer_id"
 
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
-    customer = fields.Many2one(string="Customer Name", comodel_name="fleet.customer", required=True, tracking=True)
+    customer_id = fields.Many2one(string="Customer Name", comodel_name="fleet.customer", required=True)
     start_date = fields.Date('Start Date', required=True, default=fields.Date.today)
     end_date = fields.Date('End Date', required=True, default=fields.Date.today)
     duration = fields.Char('Duration', compute="_compute_duration", default=0)
     instruction = fields.Text(name="Other Instruction")
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'), ('cancelled', 'Cancelled'), ('running', 'Running'), ('closed', 'Closed'), ('renew', 'ReNew')], default='draft')
     required_vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle", compute="_compute_available_vehicle", string='not Vehicle')
-    vehicle_id = fields.Many2many(comodel_name="fleet.vehicle", domain="[('id', 'in', required_vehicle_ids)]", string='Vehicle', required=True)
+    vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle", domain="[('id', 'in', required_vehicle_ids)]", string='Vehicle', required=True)
     count_trips = fields.Integer(compute="_count_trips")
     model_id = fields.Many2one('fleet.vehicle.car.model', 'Model')
     image_128 = fields.Image(related='model_id.image_128', readonly=False)
-    cancelled_reason = fields.Many2one(comodel_name="fleet.cancelled.reason", string="Cancelled Reason")
+    cancelled_reason_id = fields.Many2one(comodel_name="fleet.cancelled.reason", string="Cancelled Reason")
     cancelled_date = fields.Date('Cancelled Date', default=None)
-    closed_reason = fields.Many2one(comodel_name="fleet.cancelled.reason", string="Cancelled Reason")
-    closed_date = fields.Date('Cancelled Date', default=None)
+    closed_reason_id = fields.Many2one(comodel_name="fleet.cancelled.reason", string="Closed Reason")
+    closed_date = fields.Date('Closed Date', default=None)
     kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
-    renew_visible = fields.Boolean(string="visible", compute="_compute_visible")
     renew_detail = fields.One2many(comodel_name="fleet.contract.renew", inverse_name='contract_id', string="ReNew", stored=False)
 
     @api.depends("start_date", "end_date")
@@ -85,29 +84,34 @@ class VehicleContract(models.Model):
 
     def open_trip(self):
         if self.count_trips > 0:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Assignation Logs',
-                'view_type': 'list',
-                'view_mode': 'list,form',
-                'res_model': 'fleet.vehicle.contract.trip',
-                'domain': [('contract_id', '=', self.id)],
-                'context': {'default_contract_id': self.id}
-            }
+            if self.state in ['confirm', 'running']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Assignation Logs',
+                    'view_type': 'list',
+                    'view_mode': 'list,form',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'domain': [('contract_id', '=', self.id)],
+                    'context': {'default_contract_id': self.id}
+                }
+            if self.state in ['closed', 'renew']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Assignation Logs',
+                    'view_type': 'list',
+                    'view_mode': 'list',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'domain': [('contract_id', '=', self.id)],
+                }
         else:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'New Trip',
-                'view_mode': 'form',
-                'res_model': 'fleet.vehicle.contract.trip',
-                'context': {'default_contract_id': self.id}
-            }
-
-    def _compute_visible(self):
-        if self.id:
-            self.renew_visible = True
-        else:
-            self.renew_visible = False
+            if self.state in ['confirm', 'running']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'New Trip',
+                    'view_mode': 'form',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'context': {'default_contract_id': self.id}
+                }
 
     @api.depends("start_date", "end_date")
     def _compute_available_vehicle(self):
@@ -118,16 +122,8 @@ class VehicleContract(models.Model):
         booking_renew_env1 = self.env['fleet.contract.renew'].search(['&', ('state', '!=', 'cancelled'), '|', '&', ('start_date', '<=', self.start_date), ('end_date', '>=', self.start_date),
                                                                       '&', ('start_date', '<=', self.end_date), ('end_date', '>=', self.end_date)])
 
-        vehicle_list = []
-        for contract in booking_env1:
-            if contract.state in ['confirm', 'running']:
-                print(contract.state)
-                [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
-
-        for contract in booking_renew_env1:
-            if contract.state in ['confirm', 'running']:
-                print(contract.state)
-                [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+        vehicle_list = booking_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
+        vehicle_list += booking_renew_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
 
         self.required_vehicle_ids = self.env['fleet.vehicle'].search([('id', 'not in', vehicle_list)])
 
@@ -187,7 +183,7 @@ class ContractTrip(models.Model):
     driver_id = fields.Many2one(comodel_name="fleet.driver", ondelete="restrict", string='Driver Id')
     distance_travelled = fields.Float(name="Distance")
     no_of_person_in_trip = fields.Integer(name="No of Person")
-    address = fields.One2many(comodel_name='fleet.vehicle.contract.trip.address', inverse_name='trip_id', string="Address")
+    address_ids = fields.Many2many(comodel_name='fleet.trip.address', string="Address")
     renew_id = fields.Many2one(comodel_name='fleet.contract.renew', string="Renew ID")
 
 
@@ -198,17 +194,16 @@ class State(models.Model):
 
 
 class Address(models.Model):
-    _name = "fleet.vehicle.contract.trip.address"
+    _name = "fleet.trip.address"
     _description = "address included in trip"
 
     _rec_name = "street1"
     street1 = fields.Char(name="Street1")
     street2 = fields.Char(name="Street2")
     city = fields.Char(name="City")
-    state = fields.Many2one(comodel_name="fleet.state", string="State")
+    state_id = fields.Many2one(comodel_name="fleet.state", string="State")
     pincode = fields.Char(name="Pincode")
     notes = fields.Text(name="Notes")
-    trip_id = fields.Many2one(comodel_name="fleet.vehicle.contract.trip")
 
 
 class CancelledReason(models.Model):
@@ -216,6 +211,7 @@ class CancelledReason(models.Model):
     _description = "contract calcel reason"
 
     name = fields.Char(name="Reason", required=True)
+    reason_type = fields.Boolean("Reason Type")
 
 
 class ContractRenew(models.Model):
@@ -228,7 +224,7 @@ class ContractRenew(models.Model):
     end_date = fields.Date('End Date', required=True, default=fields.Date.today)
     duration = fields.Char('Duration', compute="_compute_duration")
     required_vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle", compute="_compute_available_vehicle", string='not Vehicle')
-    vehicle_id = fields.Many2many(comodel_name="fleet.vehicle", domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
+    vehicle_ids = fields.Many2many(comodel_name="fleet.vehicle", domain="[('id', 'in',required_vehicle_ids)]", string='Vehicle', required=True)
     instruction = fields.Text(name="Other Instruction")
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'), ('cancelled', 'Cancelled'), ('running', 'Running'), ('closed', 'Closed'), ('renew', 'ReNew')], default='draft')
     count_trips = fields.Integer(compute="_count_trips")
@@ -254,37 +250,42 @@ class ContractRenew(models.Model):
 
         booking_renew_env1 = self.env['fleet.contract.renew'].search(['&', ('state', '!=', 'cancelled'), '|', '&', ('start_date', '<=', self.start_date), ('end_date', '>=', self.start_date),
                                                                       '&', ('start_date', '<=', self.end_date), ('end_date', '>=', self.end_date)])
-        vehicle_list = []
-        for contract in booking_env1:
-            if contract.state in ['confirm', 'running']:
-                print(contract.state)
-                [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
 
-        for contract in booking_renew_env1:
-            if contract.state in ['confirm', 'running']:
-                print(contract.state)
-                [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
+        vehicle_list = booking_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
+        vehicle_list += booking_renew_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
 
         self.required_vehicle_ids = self.env['fleet.vehicle'].search([('id', 'not in', vehicle_list)])
 
     def open_trip(self):
         if self.count_trips > 0:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Assignation Logs',
-                'view_mode': 'tree',
-                'res_model': 'fleet.vehicle.contract.trip',
-                'domain': [('contract_id', '=', self.id)],
-            }
+            if self.state in ['confirm', 'running']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Assignation Logs',
+                    'view_type': 'list',
+                    'view_mode': 'list,form',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'domain': [('contract_id', '=', self.id)],
+                    'context': {'default_contract_id': self.id}
+                }
+            if self.state in ['closed', 'renew']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Assignation Logs',
+                    'view_type': 'list',
+                    'view_mode': 'list',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'domain': [('contract_id', '=', self.id)],
+                }
         else:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'New Trip',
-                'view_mode': 'form',
-                'res_model': 'fleet.vehicle.contract.trip',
-                'context': {'default_contract_id': self.contract_id.id,
-                            'default_renew_id': self.id}
-            }
+            if self.state in ['confirm', 'running']:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'New Trip',
+                    'view_mode': 'form',
+                    'res_model': 'fleet.vehicle.contract.trip',
+                    'context': {'default_contract_id': self.id}
+                }
 
     def _count_trips(self):
         trip_env = self.env['fleet.vehicle.contract.trip']

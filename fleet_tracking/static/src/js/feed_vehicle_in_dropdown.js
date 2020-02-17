@@ -3,6 +3,7 @@ odoo.define('fleet_tracking.feed_vehicle_in_dropdown', function (require) {
       // debugger;
 
 var publicWidget = require('web.public.widget');
+// var my_model = new Model('fleet_tracking.fleet.vehicle.car.model');
 
 publicWidget.registry.FeedVehicleInDropdown = publicWidget.Widget.extend({
     template: 'fleet_tracking.contract_booking',
@@ -27,6 +28,11 @@ publicWidget.registry.FeedVehicleInDropdown = publicWidget.Widget.extend({
   // mapLink.href = '';
   // mapLink.textContent = '';
         //debugger;
+        // this._rpc({
+        //     model : 'fleet.vehicle.brand',
+        //     method : 'abc',
+        // })
+
 
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(success);
@@ -40,7 +46,11 @@ publicWidget.registry.FeedVehicleInDropdown = publicWidget.Widget.extend({
             console.log("latitude="+latitude)
             console.log("longitude="+longitude)
         }
-
+        this._rpc({
+                model: 'fleet.vehicle.brand',
+                method: 'abc',
+                args:[]
+            });
 
     },
 

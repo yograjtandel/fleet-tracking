@@ -1,183 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo> 
-
-<template id="assets_frontend" inherit_id="web.assets_frontend" name="Demo Assets">
-        <xpath expr="//link[last()]" position="inside">
-            <link rel="stylesheet" type="text/scss" href="/fleet_tracking/static/src/scss/portal.scss"/>
-        </xpath>
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/fleet_tracking/static/src/js/feed_vehicle_in_dropdown.js"/>
-        </xpath>
-</template>
-
-
-<template id="fleet_portal_menu">
-	<center><h1>Fleet Tracking</h1></center> 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarNav">
-	    <ul class="navbar-nav">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="/home/">Home <span class="sr-only">(current)</span></a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="/odometer/">Odometer</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="/map/">Map</a>
-	      </li>
-	    </ul>
-	  </div>
-	</nav>
-</template>
-
-<template id="home_page">
-	<t t-call="portal.frontend_layout">
-        <div class="oe_structure"/>
-        <div class="oe_structure">
-            <div class="container">
-		 	<t t-call="fleet_tracking.fleet_portal_menu"/>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Vehicle</th>
-                        <th scope="col">Driver</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Reading</th>
-                        <th scope="col">Unit</th>
-                    </tr>
-                </thead>
-                <t t-foreach="odometer" t-as="odo">
-                    <tr>
-	                    <td><t t-esc="odo.vehicle_id.model_id.brand_id.name"/>-
-							  	<t t-esc="odo.vehicle_id.model_id.name"/>/						  	
-							  	<t t-esc="odo.vehicle_id.license_plate"/>/
-							  	<t t-esc="odo.vehicle_id.color"/></td>
-	                    <td><t t-esc="odo.driver_id.name"/>,<t t-esc="odo.driver_id.driving_licence_nunmber"/></td>
-	                    <td><t t-esc="odo.date"/></td>
-	                    <td><t t-esc="odo.odometer_reading"/></td>
-	                    <td><t t-esc="odo.reading_unit"/></td>
-                    </tr>
-            	</t>
-            </table>
-        </div>
-        </div>
-    </t>
-</template>
-
-
-<template id="odometer">
-	<t t-call="portal.frontend_layout">
-		<div class="container">
-			
-		 	<t t-call="fleet_tracking.fleet_portal_menu"/>
-		    <form action="/save/odometer/">
-		            <div class="col-lg-8 form_cente">
-		                <div class="form-group">
-		                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Vehicle</label>
-		                    <select class="form-control" name="vehicle">
-							  <option>Select Vehicle</option>
-							  <t t-foreach="vehicle" t-as="vh">
-							  	<option t-att-value="vh.id"><t t-esc="vh.model_id.brand_id.name"/>-
-							  	<t t-esc="vh.model_id.name"/>/						  	
-							  	<t t-esc="vh.license_plate"/>/
-							  	<t t-esc="vh.color"/></option>
-							  </t>
+<odoo>
+	<template id="assets_frontend" inherit_id="web.assets_frontend" name="Demo Assets">
+		<xpath expr="//link[last()]" position="inside">
+			<link href="/fleet_tracking/static/src/scss/portal.scss" rel="stylesheet" type="text/scss"/>
+		</xpath>
+		<xpath expr="." position="inside">
+			<script src="/fleet_tracking/static/src/js/feed_vehicle_in_dropdown.js" type="text/javascript"/>
+		</xpath>
+	</template>
+	<template id="fleet_portal_menu">
+		<center>
+			<h1>Fleet Tracking</h1>
+		</center>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNav" data-toggle="collapse" type="button">
+				<span class="navbar-toggler-icon"/>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<t t-if="request.env.user.has_group('fleet_tracking.group_driver')">
+						<li class="nav-item active">
+							<a class="nav-link" href="/my/">Home 
+								<span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/odometer/">Odometer</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/map/">Map</a>
+						</li>
+					</t>
+					<t t-if="request.env.user.has_group('fleet_tracking.group_customer')">
+						<li class="nav-item">
+							<a class="nav-link" href="/contract/">Contract</a>
+						</li>
+					</t>
+				</ul>
+			</div>
+		</nav>
+	</template>
+	<template id="home_page">
+		<t t-call="portal.frontend_layout">
+			<div class="oe_structure"/>
+			<div class="oe_structure">
+				<div class="container">
+					<t t-call="fleet_tracking.fleet_portal_menu"/>
+					<t t-if="request.env.user.has_group('fleet_tracking.group_driver')">
+						<table class="table">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Vehicle</th>
+									<th scope="col">Driver</th>
+									<th scope="col">Date</th>
+									<th scope="col">Reading</th>
+									<th scope="col">Unit</th>
+								</tr>
+							</thead>
+							<t t-as="odo" t-foreach="odometer">
+								<tr>
+									<td>
+										<t t-esc="odo.vehicle_id.model_id.brand_id.name"/>-
+								  	
+										<t t-esc="odo.vehicle_id.model_id.name"/>
+										/
+								  	
+										<t t-esc="odo.vehicle_id.license_plate"/>
+										/
+								  	
+										<t t-esc="odo.vehicle_id.color"/></td>
+									<td>
+										<t t-esc="odo.driver_id.name"/>,
+										<t t-esc="odo.driver_id.driving_licence_nunmber"/></td>
+									<td>
+										<t t-esc="odo.date"/>
+									</td>
+									<td>
+										<t t-esc="odo.odometer_reading"/>
+									</td>
+									<td>
+										<t t-esc="odo.reading_unit"/>
+									</td>
+								</tr>
+							</t>
+						</table>
+					</t>
+				</div>
+			</div>
+		</t>
+	</template>
+	<template id="odometer">
+		<t t-call="portal.frontend_layout">
+			<div class="container">
+				<t t-call="fleet_tracking.fleet_portal_menu"/>
+				<form action="/save/odometer/" method="post">
+					<div class="col-lg-8 form_cente">
+						<div class="form-group">
+							<label class="form-control-label" for="lgFormGroupInput" id="titelLabel">Vehicle</label>
+							<select class="form-control" name="vehicle">
+								<option>Select Vehicle</option>
+								<t t-as="vh" t-foreach="vehicle">
+									<option t-att-value="vh.id">
+										<t t-esc="vh.model_id.brand_id.name"/>-
+							  	
+										<t t-esc="vh.model_id.name"/>
+										/
+							  	
+										<t t-esc="vh.license_plate"/>
+										/
+							  	
+										<t t-esc="vh.color"/></option>
+								</t>
 							</select>
 						</div>
-
-						<div class="form-group" >
-		                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Driver</label>
-		                    <select class="form-control" name="driver">
-							  <option>Select Driver</option>	
-							  <t t-foreach="driver" t-as="dr">
-							  	<option t-att-value="dr.id"><t t-esc="dr.name"/>-
-							  	<t t-esc="dr.driving_licence_nunmber"/></option>
-							  </t>
+						<div class="form-group">
+							<label class="form-control-label" for="lgFormGroupInput" id="titelLabel">Driver</label>
+							<select class="form-control" name="driver">
+								<option>Select Driver</option>
+								<t t-as="dr" t-foreach="driver">
+									<option t-att-value="dr.id">
+										<t t-esc="dr.name"/>-
+							  	
+										<t t-esc="dr.driving_licence_nunmber"/></option>
+								</t>
 							</select>
 						</div>
-
-						<div class="form-group" >
-						    <label for="exampleInputEmail1">Date</label>
-						    <input type="date" name="date" class="form-control"/>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Date</label>
+							<input class="form-control" name="date" type="date"/>
 						</div>
 						<div class="row">
-							<div class="col-xl-6" >
-							    <label for="exampleInputEmail1">Odometer Reading</label>
-							    <input type="number" name="reading" class="form-control"/>
-							</div>
-
 							<div class="col-xl-6">
-							    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Unit</label>
-		                        <select class="form-control" name="unit">
-								  <option>Km</option>
-								  <option>Mile</option>
+								<label for="exampleInputEmail1">Odometer Reading</label>
+								<input class="form-control" name="reading" type="number"/>
+							</div>
+							<div class="col-xl-6">
+								<label class="form-control-label" for="lgFormGroupInput" id="titelLabel">Unit</label>
+								<select class="form-control" name="unit">
+									<option>Km</option>
+									<option>Mile</option>
 								</select>
 							</div>
-							
 							<div class="col-xl-6 mybutton">
-		             			<button type="submit" class="btn btn-primary mysubmit" style="margin-top: 5%;">Submit</button>
+								<button class="btn btn-primary mysubmit" style="margin-top: 5%;" type="submit">Submit</button>
 							</div>
 						</div>
-						
-		            </div>
-		    </form>
-		</div>     
-	</t>
-</template>
-
-
-
-<template id="contract_booking">
-	<t t-call="portal.frontend_layout">
-		<div class="container">
-		 	<t t-call="fleet_tracking.fleet_portal_menu"/>
-		    <form action="#">
-	            <div class="col-lg-8 form_cente">
-<!-- 	                <div class="form-group">
-	                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Customer</label>
-	                    <select class="form-control">
-						  <option>Default select</option>
-						</select>
 					</div>
-
-					<div class="form-group">
-					    <label for="exampleInputEmail1">Start Date</label>
-					    <input type="date" class="form-control"/>
+				</form>
+			</div>
+		</t>
+	</template>
+	<template id="contract_booking">
+		<t t-call="portal.frontend_layout">
+			<div class="container">
+				<t t-call="fleet_tracking.fleet_portal_menu"/>
+				<form action="/contract/" method="post">
+					<div class="col-lg-8 form_cente">
+						<t t-if="vehicles != None">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="disabledTextInput">Start Date</label>
+									<input class="form-control" id="disabledInput" readonly="1" t-att-value="start_date" type="text"/>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputPassword4">End Date</label>
+									<input class="form-control" id="disabledInput" readonly="1" t-att-value="end_date" type="text"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="form-control-label" for="lgFormGroupInput" id="titelLabel">Vehicle</label>
+								<select class="form-control">
+									<option>Select Vehicle</option>
+									<t t-as="vh" t-foreach="vehicles">
+										<option t-att-value="vh.id">
+											<t t-esc="vh.model_id.brand_id.name"/>-
+							  	
+											<t t-esc="vh.model_id.name"/>
+											/
+							  	
+											<t t-esc="vh.license_plate"/>
+											/
+							  	
+											<t t-esc="vh.color"/></option>
+									</t>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="comment">Note</label>
+								<textarea class="form-control" id="comment" name="note" rows="5"/>
+							</div>
+							<div class="col-xl-6 mybutton">
+								<button class="btn btn-primary mysubmit" style="margin-top: 5%;" type="submit">Continue</button>
+							</div>
+						</t>
+						<t t-else="">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Start Date</label>
+								<input class="form-control" name="start_date" type="date"/>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">End Date</label>
+								<input class="form-control" name="end_date" type="date"/>
+							</div>
+							<div class="col-xl-6 mybutton">
+								<button class="btn btn-primary mysubmit" style="margin-top: 5%;" type="submit">Find Vehicle</button>
+							</div>
+						</t>
 					</div>
-
-
-					<div class="form-group">
-					    <label for="exampleInputEmail1">End Date</label>
-					    <input type="date" class="form-control"/>
-					</div>
-
-					<div class="form-group">
-	                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Duration</label>
-						<input type="number" class="form-control"/>
-					</div>
-
-					
-					<div class="form-group">
-	                    <label id="titelLabel" class="form-control-label" for="lgFormGroupInput">Vehicle</label>
-	                    <select class="form-control">
-						  <option>Default select</option>
-						</select>
-					</div> -->
-						
-						<div class="col-xl-6 mybutton">
-	             			<button type="submit" class="btn btn-primary mysubmit" style="margin-top: 5%;">Submit</button>
-						</div>
-
-						<p id = "status"></p>
-<a id = "map-link" target="_blank"></a>
-					</div>
-				
-		    </form>
-		</div>     
-	</t>
-</template>
+				</form>
+			</div>
+		</t>
+	</template>
+	<template id="render_map">
+		<t t-call="portal.frontend_layout">
+			<div class="container">
+				<t t-call="fleet_tracking.fleet_portal_menu"/>
+			</div>
+		</t>
+	</template>
 </odoo>
-

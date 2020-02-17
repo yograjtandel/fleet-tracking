@@ -15,7 +15,7 @@ class FleetCost(models.Model):
     _description = "manage expence on vehicle"
 
     date = fields.Date('End Date', required=True, default=fields.Date.today)
-    vehicle = fields.Many2one(comodel_name="fleet.vehicle", ondelete="restrict", string="Vehicle")
-    maintenance_type = fields.Many2one(comodel_name="fleet.maintenance.type", ondelete="restrict", string='Maintenance Type')
+    vehicle_id = fields.Many2one(comodel_name="fleet.vehicle", ondelete="restrict", string="Vehicle")
+    maintenance_type_id = fields.Many2one(comodel_name="fleet.maintenance.type", ondelete="restrict", string='Maintenance Type')
     cost = fields.Float('Cost')
     note = fields.Text('Note')

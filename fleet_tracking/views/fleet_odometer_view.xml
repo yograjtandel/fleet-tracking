@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
   <data>
-    <record model='ir.ui.view' id = 'fleet_odometer_list_view'>
-      <field name= "name">fleet.odometer.tree</field>
+    <record id="fleet_odometer_list_view" model="ir.ui.view">
+      <field name="name">fleet.odometer.tree</field>
       <field name="model">fleet.odometer</field>
       <field name="arch" type="xml">
         <tree>
@@ -15,33 +14,28 @@
         </tree>
       </field>
     </record>
-
-    <record model="ir.ui.view" id="fleet_odometer_form_view">
+    <record id="fleet_odometer_form_view" model="ir.ui.view">
       <field name="name">fleet.odometer.form</field>
       <field name="model">fleet.odometer</field>
       <field name="arch" type="xml">
         <form>
           <sheet>
             <group>
-	          <field name="vehicle_id"/>
-	          <field name="date"/>
-	          <field name="driver_id"/>
-	          <field name="odometer_reading"/>
-	          <field name="reading_unit" readonly="1"/>
+              <field name="vehicle_id"/>
+              <field name="date"/>
+              <field name="driver_id"/>
+              <field name="odometer_reading"/>
+              <field name="reading_unit" readonly="1"/>
             </group>
           </sheet>
         </form>
       </field>
     </record>
-
-    <record model="ir.actions.act_window" id = "fleet_odometer_action_window">
-      <field name="name"> Odometer </field>
+    <record id="fleet_odometer_action_window" model="ir.actions.act_window">
+      <field name="name">Odometer </field>
       <field name="res_model">fleet.odometer</field>
       <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem name="Odometer" id="fleet_odometer_menu_child" parent="fleet_tracking.vehicle_vehicle_menu_child" action="fleet_odometer_action_window"/>
-
-
+    <menuitem action="fleet_odometer_action_window" id="fleet_odometer_menu_child" name="Odometer" parent="fleet_tracking.vehicle_vehicle_menu_child"/>
   </data>
 </odoo>
