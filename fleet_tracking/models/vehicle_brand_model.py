@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
-# from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 
 class CarModel(models.Model):
@@ -27,7 +27,6 @@ class VehicleBrand(models.Model):
     name = fields.Char(name="Name", required=True)
     active = fields.Boolean(default=True)
     image_128 = fields.Image('image_128', max_width=128, max_height=128)
-    # my_sys_variable = fields.Char(config_parameter="fleet.yog_sys_param")
 
     @api.model
     def abc(self, **args):

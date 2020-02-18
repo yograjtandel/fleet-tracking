@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-import json
-from collections import Counter
 from passlib.context import CryptContext
 
 
@@ -69,7 +68,6 @@ class VehicleContract(models.Model):
     cancelled_date = fields.Date('Cancelled Date', default=None)
     closed_reason_id = fields.Many2one(comodel_name="fleet.cancelled.reason", string="Closed Reason")
     closed_date = fields.Date('Closed Date', default=None)
-    kanban_dashboard_graph = fields.Text(compute='_kanban_dashboard_graph')
     renew_detail = fields.One2many(comodel_name="fleet.contract.renew", inverse_name='contract_id', string="ReNew", stored=False)
 
     @api.depends("start_date", "end_date")
@@ -156,21 +154,6 @@ class VehicleContract(models.Model):
         for record in self:
             if record.end_date < record.start_date:
                 raise ValidationError("Contract end date must be greter than start date")
-
-    def _kanban_dashboard_graph(self):
-        for journal in self:
-            journal.kanban_dashboard_graph = json.dumps(journal.get_bar_graph_datas())
-
-    def get_bar_graph_datas(self):
-        data = []
-        contract_env = self.env['fleet.vehicle.contract.booking'].search([])
-
-        list_of_date = [date.start_date.strftime("%m") for date in contract_env]
-        data_values = Counter(list_of_date)
-        for key in data_values:
-            data.append({'label': key, 'value': data_values[key], 'type': 'past'})
-
-        return [{'values': data, 'title': "Monthly Contract", 'key': "graph_key", 'is_sample_data': True}]
 
 
 class ContractTrip(models.Model):

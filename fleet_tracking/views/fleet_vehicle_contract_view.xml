@@ -61,7 +61,7 @@
       <field name="arch" type="xml">
         <tree decoration-danger="state=='confirm'" decoration-info="state=='draft'" decoration-success="state=='done'" string="contract list">
           <field invisible="1" name="company_id"/>
-          <field name="customer_id" can_create="false"/>
+          <field name="customer_id"/>
           <field name="state"/>
           <field name="start_date"/>
           <field name="end_date"/>
@@ -91,9 +91,9 @@
                 <field name="count_trips" string="Trip" widget="statinfo"/>
               </button>
             </div>
-            <group><field name="customer_id"/>
-
-              <!-- <field name="customer_id" /> -->
+            <group>
+              <field name="customer_id"/>
+              <!-- <field name="customer_id" options="{'no_create' = True}"/> -->
               <field name="start_date"/>
               <field name="end_date"/>
               <field name="duration"/>
@@ -122,29 +122,6 @@
             </notebook>
           </sheet>
         </form>
-      </field>
-    </record>
-    <record id="fleet_vehicle_contract_booking_kanban_view" model="ir.ui.view">
-      <field name="name">fleet.vehicle.contract.booking.kanban</field>
-      <field name="model">fleet.vehicle.contract.booking</field>
-      <field name="arch" type="xml">
-        <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="false">
-          <field name="customer_id"/>
-          <field name="start_date"/>
-          <field name="end_date"/>
-          <field name="duration"/>
-          <field name="vehicle_ids"/>
-          <field name="instruction"/>
-          <field invisible="1" name="kanban_dashboard_graph"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div>
-                <t t-set="dashboard" t-value-="record.kanban_dashboard_graph"/>
-                <t t-esc="dashboard"/>
-              </div>
-            </t>
-          </templates>
-        </kanban>
       </field>
     </record>
     <record id="fleet_vehicle_contract_booking_calendar_view" model="ir.ui.view">
@@ -179,7 +156,7 @@
     <record id="fleet_vehicle_contract_booking_action_window" model="ir.actions.act_window">
       <field name="name">Contract </field>
       <field name="res_model">fleet.vehicle.contract.booking</field>
-      <field name="view_mode">tree,form,calendar,kanban,dashboard</field>
+      <field name="view_mode">tree,form,calendar,dashboard</field>
     </record>
 
     <record id="fleet_contract_renew_form_view" model="ir.ui.view">

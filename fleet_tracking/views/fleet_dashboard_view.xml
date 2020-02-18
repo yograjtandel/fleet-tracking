@@ -5,13 +5,9 @@
         <field name="model">fleet.dashboard</field>
         <field name="arch" type="xml">
             <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban" create="false">
-                <!-- <field name="kanban_dashboard_graph" invisible="1"/>-->
                 <field name="name"/>
                 <templates>
-                    <!--                     <t t-name="kanban-box"><div><t t-set="dashboard" t-value-="record.kanban_dashboard_graph"/><t t-esc="dashboard"/></div></t>-->
                     <t t-name="kanban-box">
-                        <!--                 <t t-debug=""/><t t-esc="sssssssssssssssssssssaaaa"/>-->
-                        <!-- <field name="name"/>-->
                         <div>
                             <field graph_type="bar" name="kanban_dashboard_graph" widget="dashboard_graph"/>
                         </div>

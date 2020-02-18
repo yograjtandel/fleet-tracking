@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import http
 from odoo.http import request
 from odoo.addons.web.controllers.main import Home
 import werkzeug
-# from fleet_tracking.fleet_vehicle_contract_model import 
 
 
 class Home(Home):
@@ -64,22 +65,11 @@ class UserRegister(http.Controller):
             vehicle_list = booking_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
             vehicle_list += booking_renew_env1.filtered(lambda con: con.state in ['confirm', 'running']).mapped('vehicle_ids.id')
 
-            # vehicle_list = []
-            # for contract in booking_env1:
-            #     if contract.state in ['confirm', 'running']:
-            #         print(contract.state)
-            #         [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
-
-            # for contract in booking_renew_env1:
-            #     if contract.state in ['confirm', 'running']:
-            #         print(contract.state)
-            #         [vehicle_list.append(v_id) for v_id in contract.vehicle_id.ids]
             vehicles = request.env['fleet.vehicle'].search([('id', 'not in', vehicle_list)])
             return request.render('fleet_tracking.contract_booking', {'vehicles': vehicles,
                                                                       'start_date': post.get('start_date'),
                                                                       'end_date': post.get('end_date')})
         return request.render('fleet_tracking.contract_booking', {'vehicles': vehicles})
-
 
     @http.route('/registration/<string:user>', method="post", auth="public", type="http", csrf=False)
     def service_provider_index1(self, user=None, **post):

@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 {
     'name': "fleet_tracking",
-    'version': '1.0',
-    'depends': ['base', 'web_dashboard', 'portal'],
-    'author': 'yog',
+    'depends': ['base', 'portal', 'web_dashboard'],
+    'author': 'Tandel Yograj ',
     'category': 'Category',
-    'description': """
-    Description text
-    """,
+    'description': """Manage & track vehicles in business like travells,transportation etc,""",
     'data': ['security/fleet_security.xml',
              'security/ir.model.access.csv',
              'data/data.xml',
@@ -23,8 +20,6 @@
              'views/res_config_settings_views.xml',
              'views/homepage_template.xml'],
 
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'demo': ['demo/demo.xml'],
     'application': True
 }

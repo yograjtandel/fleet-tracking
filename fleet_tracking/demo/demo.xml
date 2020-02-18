@@ -1,111 +1,127 @@
 <odoo>
-	<data>
-		<record id="meet" model="fleet.customer">
-			<field name="name">meet</field>
-			<field name="email">meet67@gmail.com</field>
-			<field name="mobile">8353774121</field>
-			<field name="street1">varacha</field>
-			<field name="street2">ramnagar</field>
-			<field name="city">surat</field>
-			<field name="pincode">391242</field>
-			<field name="state" ref="gujarat"/>
-			<field name="country">india</field>
-			<field name="password">abc</field>
-		</record>
-		<record id="ketan" model="fleet.customer">
-			<field name="name">ketan</field>
-			<field name="email">ketan21@gmail.com</field>
-			<field name="mobile">8353774121</field>
-			<field name="street1">incometax</field>
-			<field name="street2">ramnagar</field>
-			<field name="city">ahmedabad</field>
-			<field name="pincode">391242</field>
-			<field name="state" ref="gujarat"/>
-			<field name="country">india</field>
-			<field name="password">abc</field>
-		</record>
-		<record id="vrusil" model="fleet.customer">
-			<field name="name">vrusil</field>
-			<field name="email">vru77@gmail.com</field>
-			<field name="mobile">8353774121</field>
-			<field name="street1">sector-2</field>
-			<field name="street2">333</field>
-			<field name="city">gandhinagar</field>
-			<field name="pincode">391242</field>
-			<field name="state" ref="gujarat"/>
-			<field name="country">india</field>
-			<field name="password">abc</field>
-		</record>
-		<record id="model1" model="fleet.vehicle.car.model">
-			<field name="name">Mustang GT</field>
-			<field name="brand_id" ref="brand_ford"/>
-		</record>
-		<record id="model2" model="fleet.vehicle.car.model">
-			<field name="name">Grand i10</field>
-			<field name="brand_id" ref="brand_hyundai"/>
-		</record>
-		<record id="model3" model="fleet.vehicle.car.model">
-			<field name="name">M5</field>
-			<field name="brand_id" ref="brand_bmw"/>
-		</record>
-		<record id="model4" model="fleet.vehicle.car.model">
-			<field name="name">R8</field>
-			<field name="brand_id" ref="brand_audi"/>
-		</record>
-		<record id="model5" model="fleet.vehicle.car.model">
-			<field name="name">camaro</field>
-			<field name="brand_id" ref="brand_chevrolet"/>
-		</record>
-		<record id="vehicle1" model="fleet.vehicle">
-			<field name="model_id" ref="model1"/>
-			<field name="license_plate">GJ 1 RL 8683</field>
-			<field name="no_of_seats">5</field>
-			<field name="no_of_doors">2</field>
-			<field name="color">Black</field>
-			<field name="model_year">2019</field>
-			<field name="description"/>
-			<field name="fule_type" ref="petrol"/>
-		</record>
-		<record id="vehicle2" model="fleet.vehicle">
-			<field name="model_id" ref="model5"/>
-			<field name="license_plate">GJ 1 F 5907</field>
-			<field name="no_of_seats">5</field>
-			<field name="no_of_doors">4</field>
-			<field name="color">White</field>
-			<field name="model_year">2019</field>
-			<field name="description"/>
-			<field name="fule_type" ref="petrol"/>
-		</record>
-		<record id="vehicle3" model="fleet.vehicle">
-			<field name="model_id" ref="model3"/>
-			<field name="license_plate">GJ 1 RS 7982</field>
-			<field name="no_of_seats">5</field>
-			<field name="no_of_doors">4</field>
-			<field name="color">Mat-Gray</field>
-			<field name="model_year">2019</field>
-			<field name="description"/>
-			<field name="fule_type" ref="petrol"/>
-		</record>
-		<record id="driver_dom" model="fleet.driver">
-			<field name="name">Domnic</field>
-			<field name="driving_licence_nunmber">RJ-13/DLC/12/ 11111</field>
-			<field name="email">dom77@gmail.com</field>
-			<field name="phone">8353774121</field>
-			<field name="birth_date">1994-1-27</field>
-		</record>
-		<record id="driver_brian" model="fleet.driver">
-			<field name="name">Brian</field>
-			<field name="driving_licence_nunmber">RJ-13/DLC/12/ 222222</field>
-			<field name="email">dom77@gmail.com</field>
-			<field name="phone">8353774121</field>
-			<field name="birth_date">1994-1-27</field>
-		</record>
-		<record id="driver_han" model="fleet.driver">
-			<field name="name">Han</field>
-			<field name="driving_licence_nunmber">RJ-13/DLC/12/ 333333</field>
-			<field name="email">dom77@gmail.com</field>
-			<field name="phone">8353774121</field>
-			<field name="birth_date">1994-1-27</field>
-		</record>
-	</data>
+	<record id="meet" model="fleet.customer">
+		<field name="name">meet</field>
+		<field name="email">meet67@gmail.com</field>
+		<field name="mobile">8353774121</field>
+		<field name="street1">varacha</field>
+		<field name="street2">ramnagar</field>
+		<field name="city">surat</field>
+		<field name="pincode">391242</field>
+		<field name="state" ref="gujarat"/>
+		<field name="country">india</field>
+		<field name="password">abc</field>
+	</record>
+	<record id="ketan" model="fleet.customer">
+		<field name="name">ketan</field>
+		<field name="email">ketan21@gmail.com</field>
+		<field name="mobile">8353774121</field>
+		<field name="street1">incometax</field>
+		<field name="street2">ramnagar</field>
+		<field name="city">ahmedabad</field>
+		<field name="pincode">391242</field>
+		<field name="state" ref="gujarat"/>
+		<field name="country">india</field>
+		<field name="password">abc</field>
+	</record>
+	<record id="vrusil" model="fleet.customer">
+		<field name="name">vrusil</field>
+		<field name="email">vru77@gmail.com</field>
+		<field name="mobile">8353774121</field>
+		<field name="street1">sector-2</field>
+		<field name="street2">333</field>
+		<field name="city">gandhinagar</field>
+		<field name="pincode">391242</field>
+		<field name="state" ref="gujarat"/>
+		<field name="country">india</field>
+		<field name="password">abc</field>
+	</record>
+	<record id="model1" model="fleet.vehicle.car.model">
+		<field name="name">Mustang GT</field>
+		<field name="brand_id" ref="brand_ford"/>
+	</record>
+	<record id="model2" model="fleet.vehicle.car.model">
+		<field name="name">Grand i10</field>
+		<field name="brand_id" ref="brand_hyundai"/>
+	</record>
+	<record id="model3" model="fleet.vehicle.car.model">
+		<field name="name">M5</field>
+		<field name="brand_id" ref="brand_bmw"/>
+	</record>
+	<record id="model4" model="fleet.vehicle.car.model">
+		<field name="name">R8</field>
+		<field name="brand_id" ref="brand_audi"/>
+	</record>
+	<record id="model5" model="fleet.vehicle.car.model">
+		<field name="name">camaro</field>
+		<field name="brand_id" ref="brand_chevrolet"/>
+	</record>
+	<record id="vehicle1" model="fleet.vehicle">
+		<field name="model_id" ref="model1"/>
+		<field name="license_plate">GJ 1 RL 8683</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">2</field>
+		<field name="color">Black</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+	<record id="vehicle2" model="fleet.vehicle">
+		<field name="model_id" ref="model5"/>
+		<field name="license_plate">GJ 1 F 5907</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">4</field>
+		<field name="color">White</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+	<record id="vehicle3" model="fleet.vehicle">
+		<field name="model_id" ref="model3"/>
+		<field name="license_plate">GJ 1 RS 7982</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">4</field>
+		<field name="color">Mat-Gray</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+	<record id="driver_dom" model="fleet.driver">
+		<field name="name">Domnic</field>
+		<field name="driving_licence_nunmber">RJ-13/DLC/12/ 11111</field>
+		<field name="email">dom77@gmail.com</field>
+		<field name="phone">8353774121</field>
+		<field name="birth_date">1994-1-27</field>
+	</record>
+	<record id="driver_brian" model="fleet.driver">
+		<field name="name">Brian</field>
+		<field name="driving_licence_nunmber">RJ-13/DLC/12/ 222222</field>
+		<field name="email">dom77@gmail.com</field>
+		<field name="phone">8353774121</field>
+		<field name="birth_date">1994-1-27</field>
+	</record>
+	<record id="driver_han" model="fleet.driver">
+		<field name="name">Han</field>
+		<field name="driving_licence_nunmber">RJ-13/DLC/12/ 333333</field>
+		<field name="email">dom77@gmail.com</field>
+		<field name="phone">8353774121</field>
+		<field name="birth_date">1994-1-27</field>
+	</record>
+	<record id="contract_1" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="ketan"/>
+		<field name="start_date">2020-2-16</field>
+		<field name="end_date">2020-2-16</field>
+		<field eval="[(6,0,[ref('vehicle3'),ref('vehicle2')])]" name="vehicle_ids"/>
+	</record>
+	<record id="contract_2" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="meet"/>
+		<field name="start_date">2020-2-16</field>
+		<field name="end_date">2020-2-17</field>
+		<field eval="[(6,0,[ref('vehicle1')])]" name="vehicle_ids"/>
+	</record>
+	<record id="contract_3" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="vrusil"/>
+		<field name="start_date">2020-4-1</field>
+		<field name="end_date">2020-4-2</field>
+		<field eval="[(6,0,[ref('vehicle3'),ref('vehicle2')])]" name="vehicle_ids"/>
+	</record>
 </odoo>
